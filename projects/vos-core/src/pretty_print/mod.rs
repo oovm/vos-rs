@@ -1,5 +1,9 @@
+use std::fmt::{Arguments, Display, Formatter, Write};
+
+use indenter::CodeFormatter;
+use vos_error::Validation;
+
 use crate::{Codegen, Project};
-use vos_error::{Validation, VosResult};
 
 pub struct PrettyPrinter {}
 
@@ -7,47 +11,54 @@ impl Codegen for PrettyPrinter {
     type Output = String;
 
     fn generate(&self, project: &Project) -> Validation<Self::Output> {
-        let mut ctx = Context::default();
-        ctx.visit_root(project).ok();
-        Validation::Success { value: ctx.buffer, diagnostics: vec![] }
+        Validation::Success { value: project.to_string(), diagnostics: vec![] }
     }
 }
 
-struct Context {
-    buffer: String,
+struct Context<'s, T>
+where
+    T: Write,
+{
+    buffer: CodeFormatter<'s, T>,
 }
 
-impl Default for Context {
-    fn default() -> Self {
-        Self { buffer: "".to_string() }
+impl<'s, T: Write> Write for Context<'s, T> {
+    fn write_str(&mut self, s: &str) -> std::fmt::Result {
+        self.buffer.write_str(s)
+    }
+    fn write_char(&mut self, c: char) -> std::fmt::Result {
+        self.buffer.write_char(c)
+    }
+    fn write_fmt(self: &mut Self, args: Arguments<'_>) -> std::fmt::Result {
+        self.buffer.write_fmt(args)
     }
 }
 
-impl Context {
-    pub fn visit_root(&mut self, root: &Project) -> VosResult {
+impl<'s, T> Context<'s, T>
+where
+    T: Write,
+{
+    pub fn new(s: &'s mut T) -> Context<'s, T> {
+        Self { buffer: CodeFormatter::new(s, "    ") }
+    }
+
+    pub fn visit_root(&mut self, root: &Project) -> std::fmt::Result {
+        write!(self, "{}", root.description)?;
+        self.write_str("service {")?;
+
         Ok(())
     }
 }
 
-use core::fmt::{self, Write};
-use indenter::indented;
-use std::error::Error;
-
-struct ErrorReporter<'a>(&'a dyn Error);
-
-impl fmt::Debug for ErrorReporter<'_> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut source = Some(self.0);
-        let mut i = 0;
-
-        while let Some(error) = source {
-            writeln!(f)?;
-            write!(indented(f).ind(i), "{}", error)?;
-
-            source = error.source();
-            i += 1;
-        }
-
-        Ok(())
+impl Display for Project {
+    /// ```vos
+    /// /// dies
+    /// service {
+    ///     a:x
+    /// }
+    /// ```
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut ctx = Context::new(f);
+        ctx.visit_root(self)
     }
 }

@@ -1,30 +1,27 @@
+use std::{
+    collections::BTreeSet,
+    fmt::{Display, Formatter},
+};
+
 use bigdecimal::BigDecimal;
 use indexmap::IndexMap;
 use num::BigInt;
 use serde::{Deserialize, Serialize};
 
-use crate::{DecimalConstraint, DictConstraint, Document, IntegerConstraint, ListConstraint, StringConstraint};
+use crate::*;
+
+pub mod authors;
+pub mod document;
+pub mod edition;
+pub mod license;
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Project {
     pub kind: ProjectKind,
+    pub license: ProjectLicense,
     pub edition: ProjectEdition,
+    pub authors: BTreeSet<ProjectAuthor>,
     pub description: Document,
-}
-
-pub mod document;
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct ProjectEdition {
-    year: i32,
-    major: u8,
-    patch: u8,
-}
-
-impl Default for ProjectEdition {
-    fn default() -> Self {
-        Self { year: 2020, major: 0, patch: 0 }
-    }
 }
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]

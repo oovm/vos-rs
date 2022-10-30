@@ -1,5 +1,5 @@
 use super::*;
-
+use std::fmt::{Display, Formatter};
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Document {
@@ -18,11 +18,17 @@ impl Default for DocumentKind {
     }
 }
 
+impl Display for Document {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        for line in self.text.lines() {
+            writeln!(f, "/// {}", line)?
+        }
+        Ok(())
+    }
+}
+
 impl Document {
     pub fn markdown(text: impl Into<String>) -> Self {
-        Self {
-            kind: DocumentKind::GFM,
-            text: text.into()
-        }
+        Self { kind: DocumentKind::GFM, text: text.into() }
     }
 }

@@ -1,15 +1,15 @@
 use openapiv3::{Info, OpenAPI, Paths};
-use vos_error::VosResult;
+use vos_error::{Validation, VosResult};
 
-use vos_core::{Document, Project};
+use vos_core::{Document, Parser, Project};
 
 use crate::FromOpenAPI;
 
-impl FromOpenAPI {
-    pub fn convert(&self, input: &OpenAPI) -> Project {
+impl Parser<OpenAPI> for FromOpenAPI {
+    fn parse(&self, source: &OpenAPI) -> Validation<Project> {
         let mut ctx = Context { project: Default::default() };
-        input.visit(&mut ctx).unwrap();
-        ctx.project
+        source.visit(&mut ctx).unwrap();
+        Validation::Success { value: ctx.project, diagnostics: vec![] }
     }
 }
 
