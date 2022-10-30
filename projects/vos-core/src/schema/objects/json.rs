@@ -1,4 +1,5 @@
-use crate::{Dict, Json, List, Object};
+use super::*;
+use crate::Json;
 
 impl From<&Json> for Object {
     fn from(json: &Json) -> Self {
@@ -11,16 +12,10 @@ impl From<Json> for Object {
         match json {
             Json::Null => Object::Default,
             Json::Bool(v) => Object::Boolean(v),
-            Json::Number(o) => match o.as_i64() {
-                Some(n) => Object::Default,
-                None => match o.as_f64() {
-                    Some(n) => Object::Default,
-                    None => Object::Default,
-                },
-            },
+            Json::Number(o) => Object::Number(Number::from_str(&o.to_string()).unwrap_or_default()),
             Json::String(o) => Object::text(o, ""),
-            Json::Array(o) => Object::List(List { value: o.into_iter().map(|i| Object::from(i)).collect() }),
-            Json::Object(o) => Object::Dict(Dict { value: o.into_iter().map(|(k, v)| (k.clone(), Object::from(v))).collect() }),
+            Json::Array(o) => Object::List(List::from_iter(o)),
+            Json::Object(o) => Object::Dict(Dict::from_iter(o)),
         }
     }
 }

@@ -1,4 +1,4 @@
-pub use voml_collection::{Decimal, Integer, Text};
+pub use voml_collection::{Number, Text};
 pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
 
 pub use self::{

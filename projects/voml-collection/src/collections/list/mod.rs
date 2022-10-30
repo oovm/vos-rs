@@ -1,7 +1,8 @@
-use super::*;
-use indexmap::IndexMap;
+use std::collections::VecDeque;
+
 use serde::{Deserialize, Serialize};
-use std::{collections::VecDeque, slice::Iter};
+
+use super::*;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct List<T> {
@@ -15,5 +16,18 @@ impl<T> List<T> {
     }
     pub fn clear(&mut self) {
         self.clear()
+    }
+}
+
+impl<O, V> FromIterator<V> for List<O>
+where
+    O: From<V>,
+{
+    fn from_iter<T>(iter: T) -> Self
+    where
+        T: IntoIterator<Item = V>,
+    {
+        let list = VecDeque::from_iter(iter.into_iter().map(|v| O::from(v)));
+        List { hint: "".to_string(), list }
     }
 }

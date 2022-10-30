@@ -1,20 +1,15 @@
-use crate::*;
-use indexmap::IndexMap;
-use num::BigInt;
-use serde::{Deserialize, Serialize};
-use std::{
-    collections::BTreeSet,
-    fmt::{Display, Formatter},
-};
-use vos_error::{
-    for_3rd::{BigDecimal, EmailAddress},
-    VosResult,
-};
-
 use std::{
     cmp::Ordering,
-    collections::{BTreeMap, HashMap},
+    collections::{BTreeMap, BTreeSet},
+    fmt::{Display, Formatter},
 };
+
+use indexmap::IndexMap;
+use serde::{Deserialize, Serialize};
+
+use vos_error::{for_3rd::EmailAddress, VosResult};
+
+use crate::*;
 
 pub mod authors;
 pub mod document;
@@ -29,6 +24,7 @@ pub struct Project {
     pub edition: ProjectEdition,
     pub authors: BTreeSet<ProjectAuthor>,
     pub description: Document,
+    pub extra: BTreeMap<String, Object>,
 }
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
@@ -58,4 +54,14 @@ pub enum Schema {
     Decimal(DecimalConstraint),
     List(ListConstraint),
     Dict(DictConstraint),
+}
+
+impl Project {
+    pub fn extra<K, V>(&mut self, key: K, value: V) -> Option<Object>
+    where
+        K: Into<String>,
+        V: Into<Object>,
+    {
+        self.extra.insert(key.into(), value.into())
+    }
 }

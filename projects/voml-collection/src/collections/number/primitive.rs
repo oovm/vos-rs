@@ -14,17 +14,17 @@ impl FromPrimitive for Number {
     }
 
     fn from_u64(n: u64) -> Option<Self> {
-        let value = BigDecimal::from_i64(n)?;
+        let value = BigDecimal::from_u64(n)?;
         Some(Number { hint: "".to_string(), value })
     }
 
     fn from_u128(n: u128) -> Option<Self> {
-        let value = BigDecimal::from_i64(n)?;
+        let value = BigDecimal::from_u128(n)?;
         Some(Number { hint: "".to_string(), value })
     }
 
     fn from_f64(n: f64) -> Option<Self> {
-        let value = BigDecimal::from_i64(n)?;
+        let value = BigDecimal::from_f64(n)?;
         Some(Number { hint: "".to_string(), value })
     }
 }

@@ -1,6 +1,8 @@
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
 
-use crate::{Decimal, Dict, Integer, List, Text};
+use crate::{BigDecimal, Dict, Json, List, Number, Text};
 
 mod json;
 
@@ -8,8 +10,7 @@ mod json;
 pub enum Object {
     Default,
     Boolean(bool),
-    Integer(Integer),
-    Decimal(Decimal),
+    Number(Number),
     Reference(String),
     Text(Text),
     List(List),
@@ -34,14 +35,9 @@ impl From<String> for Object {
 
 impl Object {
     pub fn text(text: impl Into<String>, hint: impl Into<String>) -> Self {
-        Object::Text(Text::new(text, hint))
+        Object::Text(Text { hint: hint.into(), value: text.into() })
     }
-    pub fn integer(text: impl Into<String>, hint: impl Into<String>) -> Self {
-        // Object::Integer(Text::new(text, hint))
-        todo!()
-    }
-    pub fn decimal(text: impl Into<String>, hint: impl Into<String>) -> Self {
-        // Object::Integer(Text::new(text, hint))
-        todo!()
+    pub fn number(number: impl Into<BigDecimal>, hint: impl Into<String>) -> Self {
+        Object::Number(Number { hint: hint.into(), value: number.into() })
     }
 }

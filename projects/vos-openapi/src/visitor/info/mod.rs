@@ -24,12 +24,12 @@ impl Visit for Info {
                 ctx.errors.push(e)
             }
         }
-        if let Some(v) = &self.terms_of_service {
-            // if let Err(e) = v.visit(ctx) {
-            //     ctx.errors.push(e)
-            // }
+        if let Some(value) = &self.terms_of_service {
+            ctx.project.extra("terms_of_service", value);
         }
-        for (key, value) in &self.extensions {}
+        for (key, value) in &self.extensions {
+            ctx.project.extra(key, value);
+        }
         Ok(())
     }
 }
