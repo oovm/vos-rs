@@ -1,3 +1,4 @@
+pub use vos_error::for_3rd::*;
 use vos_error::Validation;
 
 pub use self::{
@@ -21,8 +22,7 @@ pub use self::{
 mod constraint;
 mod pretty_print;
 mod schema;
-
-pub trait Validator {}
+pub mod validator;
 
 pub trait Faker {}
 

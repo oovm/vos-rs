@@ -1,5 +1,4 @@
 use super::*;
-use bigdecimal::BigDecimal;
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct DecimalConstraint {

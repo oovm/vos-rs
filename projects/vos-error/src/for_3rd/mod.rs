@@ -1,6 +1,14 @@
 use std::fmt::Display;
 
+#[cfg(feature = "bigdecimal")]
+pub use bigdecimal::BigDecimal;
 use diagnostic::{DiagnosticError, DiagnosticLevel};
+#[cfg(feature = "email_address")]
+pub use email_address::EmailAddress;
+#[cfg(feature = "num")]
+pub use num::BigInt;
+#[cfg(feature = "url")]
+pub use url::Url;
 
 use crate::{VosError, VosErrorKind};
 

@@ -1,21 +1,21 @@
+use crate::*;
+use indexmap::IndexMap;
+use num::BigInt;
+use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeSet,
     fmt::{Display, Formatter},
 };
+use vos_error::{
+    for_3rd::{BigDecimal, EmailAddress},
+    VosResult,
+};
 
-use bigdecimal::BigDecimal;
-use indexmap::IndexMap;
-use num::BigInt;
-use serde::{Deserialize, Serialize};
-
-use crate::*;
-use email_address::EmailAddress;
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
 };
-use url::Url;
-use uuid::Uuid;
+
 pub mod authors;
 pub mod document;
 pub mod edition;

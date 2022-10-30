@@ -1,6 +1,7 @@
 use super::*;
+use vos_error::VosResult;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct ProjectAuthor {
     pub name: String,
     /// email is the user's primary id
@@ -13,7 +14,7 @@ impl Eq for ProjectAuthor {}
 
 impl PartialEq<Self> for ProjectAuthor {
     fn eq(&self, other: &Self) -> bool {
-        self.email.eq(&other.email)
+        if self.email.is_none() || other.email.is_none() { self.name.eq(&other.name) } else { self.email.eq(&other.email) }
     }
 }
 
@@ -30,6 +31,8 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
+    pub fn email(email: &str) -> VosResult<EmailAddress> {}
+
     pub fn short_name(&self) -> bool {
         todo!()
     }

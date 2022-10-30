@@ -1,13 +1,15 @@
-use openapiv3::{Info, OpenAPI, Paths};
-use vos_error::{Validation, VosResult};
+use openapiv3::{Contact, Info, License, OpenAPI, Paths};
+use vos_error::{Validation, VosError, VosResult};
 
-use vos_core::{Document, Parser, Project};
+use vos_core::{Document, Parser, Project, ProjectAuthor, ProjectLicense};
 
 use crate::FromOpenAPI;
 
+mod info;
+
 impl Parser<OpenAPI> for FromOpenAPI {
     fn parse(&self, source: &OpenAPI) -> Validation<Project> {
-        let mut ctx = Context { project: Default::default() };
+        let mut ctx = Context { project: Default::default(), errors: vec![] };
         source.visit(&mut ctx).unwrap();
         Validation::Success { value: ctx.project, diagnostics: vec![] }
     }
@@ -15,6 +17,7 @@ impl Parser<OpenAPI> for FromOpenAPI {
 
 struct Context {
     project: Project,
+    errors: Vec<VosError>,
 }
 
 trait Visit {
@@ -24,23 +27,6 @@ trait Visit {
 impl Visit for OpenAPI {
     fn visit(&self, ctx: &mut Context) -> VosResult {
         self.info.visit(ctx)?;
-
-        Ok(())
-    }
-}
-
-impl Visit for Info {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
-        println!("{:#?}", self);
-
-        match &self.description {
-            Some(description) => {
-                ctx.project.description = Document::markdown(format!("# {}\n{}", self.title, description));
-            }
-            None => {
-                ctx.project.description = Document::markdown(format!("# {}", self.title));
-            }
-        }
 
         Ok(())
     }
