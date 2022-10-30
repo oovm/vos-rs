@@ -10,6 +10,8 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+openapiv3 = "1.0.1"
+json5 = "0.4.1"
 
 
 [dependencies.vos-core]

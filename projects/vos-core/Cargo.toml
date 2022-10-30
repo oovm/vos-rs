@@ -20,8 +20,7 @@ version = "0.3.0"
 features = ["num"]
 
 [dev-dependencies]
-openapiv3 = "1.0.1"
-json5 = "0.4.1"
+
 
 [build-dependencies]
 peginator = "0.3.0"

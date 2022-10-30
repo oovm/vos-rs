@@ -7,7 +7,7 @@ pub use self::{
         string_constraint::StringConstraint,
         SharedConstraint,
     },
-    schema::{Dict, List, Project, Schema},
+    schema::{Dict, List, Project, ProjectEdition, ProjectKind, Schema},
 };
 
 mod constraint;
