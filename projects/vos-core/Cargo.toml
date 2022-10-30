@@ -21,6 +21,11 @@ version = "0.3.0"
 path = "../vos-error"
 features = ["num", "bigdecimal", "email_address", "url"]
 
+[dependencies.voml-collection]
+version = "0.1.1"
+path = "../voml-collection"
+features = []
+
 [dev-dependencies]
 
 

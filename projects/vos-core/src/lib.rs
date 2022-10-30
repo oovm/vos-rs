@@ -1,3 +1,6 @@
+pub use voml_collection::Text;
+pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
+
 pub use self::{
     constraint::{
         decimal_constraint::DecimalConstraint,
@@ -12,10 +15,12 @@ pub use self::{
         document::{Document, DocumentKind},
         edition::ProjectEdition,
         license::ProjectLicense,
-        Dict, List, Object, Project, ProjectKind, Schema,
+        Object, Project, ProjectKind, Schema,
     },
 };
-pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
+
+pub type List = voml_collection::List<Object>;
+pub type Dict = voml_collection::Dict<Object>;
 
 mod constraint;
 mod pretty_print;

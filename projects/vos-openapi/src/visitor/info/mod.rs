@@ -1,6 +1,6 @@
-use std::{collections::BTreeMap, str::FromStr};
+use std::str::FromStr;
 
-use vos_core::{EmailAddress, Object};
+use vos_core::EmailAddress;
 
 use super::*;
 
@@ -44,14 +44,14 @@ impl Visit for Contact {
             Some(s) => EmailAddress::from_str(s)?,
             None => return Err(VosError::parse_error("Project author missing email")),
         };
-        let mut extra = BTreeMap::default();
+        let mut author = ProjectAuthor { name, email, extra: Default::default() };
         if let Some(s) = &self.url {
-            extra.insert("homepage".clone(), Object::from(s.clone()));
+            author.insert("homepage", s);
         }
         for (key, value) in &self.extensions {
-            extra.insert(key.clone(), Object::from(value.clone()));
+            author.insert(key, value);
         }
-        ctx.project.authors.insert(ProjectAuthor { name, email, extra });
+        ctx.project.authors.insert(author);
         Ok(())
     }
 }

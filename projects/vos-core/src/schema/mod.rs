@@ -62,6 +62,7 @@ pub enum Schema {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Object {
+    Default,
     Boolean(bool),
     Integer(BigInt),
     Decimal(BigDecimal),
@@ -69,19 +70,4 @@ pub enum Object {
     Text(Text),
     List(List),
     Dict(Dict),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Text {
-    pub value: String,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct List {
-    pub value: Vec<Object>,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Dict {
-    pub value: IndexMap<String, Object>,
 }

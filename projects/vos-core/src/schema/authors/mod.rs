@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use super::*;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -30,6 +32,13 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
+    pub fn new(name: impl Into<String>, email: &str) -> VosResult<Self> {
+        let name = name.into();
+        let email = EmailAddress::from_str(email)?;
+
+        Ok(Self { name, email, extra: Default::default() })
+    }
+
     pub fn insert<K, V>(&mut self, key: K, value: V) -> Option<Object>
     where
         K: Into<String>,
