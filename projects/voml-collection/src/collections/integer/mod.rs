@@ -2,12 +2,13 @@ use super::*;
 use std::slice::Iter;
 
 use bigdecimal::BigDecimal;
+use num::BigInt;
 use serde::{Deserialize, Serialize};
 
 mod primitive;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Number {
+pub struct Integer {
     pub hint: String,
-    pub value: BigDecimal,
+    pub value: BigInt,
 }

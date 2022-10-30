@@ -59,15 +59,3 @@ pub enum Schema {
     List(ListConstraint),
     Dict(DictConstraint),
 }
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum Object {
-    Default,
-    Boolean(bool),
-    Integer(BigInt),
-    Decimal(BigDecimal),
-    Reference(String),
-    Text(Text),
-    List(List),
-    Dict(Dict),
-}

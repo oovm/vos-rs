@@ -19,7 +19,7 @@ num = { version = "0.4.0", features = ["serde"] }
 [dependencies.vos-error]
 version = "0.3.0"
 path = "../vos-error"
-features = ["num", "bigdecimal", "email_address", "url"]
+features = ["num", "bigdecimal", "email_address", "url", "serde_json"]
 
 [dependencies.voml-collection]
 version = "0.1.1"
@@ -33,7 +33,7 @@ features = []
 peginator = "0.3.0"
 
 [features]
-default = ["json"]
+default = []
 faker = []
 validator = []
-json = ["vos-error/serde_json"]
+#json = ["vos-error/serde_json"]

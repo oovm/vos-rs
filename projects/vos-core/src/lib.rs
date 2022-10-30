@@ -1,4 +1,4 @@
-pub use voml_collection::Text;
+pub use voml_collection::{Decimal, Integer, Text};
 pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
 
 pub use self::{
@@ -15,7 +15,8 @@ pub use self::{
         document::{Document, DocumentKind},
         edition::ProjectEdition,
         license::ProjectLicense,
-        Object, Project, ProjectKind, Schema,
+        objects::Object,
+        Project, ProjectKind, Schema,
     },
 };
 

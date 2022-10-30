@@ -1,10 +1,20 @@
-use super::*;
-use crate::Text;
+use serde::{Deserialize, Serialize};
 
-// impl From<Value>
+use crate::{Decimal, Dict, Integer, List, Text};
 
-#[cfg(feature = "json")]
 mod json;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub enum Object {
+    Default,
+    Boolean(bool),
+    Integer(Integer),
+    Decimal(Decimal),
+    Reference(String),
+    Text(Text),
+    List(List),
+    Dict(Dict),
+}
 
 impl From<&str> for Object {
     fn from(value: &str) -> Self {
@@ -24,6 +34,14 @@ impl From<String> for Object {
 
 impl Object {
     pub fn text(text: impl Into<String>, hint: impl Into<String>) -> Self {
-        Object::Text(Text::new())
+        Object::Text(Text::new(text, hint))
+    }
+    pub fn integer(text: impl Into<String>, hint: impl Into<String>) -> Self {
+        // Object::Integer(Text::new(text, hint))
+        todo!()
+    }
+    pub fn decimal(text: impl Into<String>, hint: impl Into<String>) -> Self {
+        // Object::Integer(Text::new(text, hint))
+        todo!()
     }
 }

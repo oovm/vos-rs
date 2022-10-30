@@ -18,7 +18,7 @@ impl From<Json> for Object {
                     None => Object::Default,
                 },
             },
-            Json::String(o) => Object::Text(),
+            Json::String(o) => Object::text(o, ""),
             Json::Array(o) => Object::List(List { value: o.into_iter().map(|i| Object::from(i)).collect() }),
             Json::Object(o) => Object::Dict(Dict { value: o.into_iter().map(|(k, v)| (k.clone(), Object::from(v))).collect() }),
         }
