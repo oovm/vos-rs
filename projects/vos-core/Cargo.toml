@@ -10,6 +10,7 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+indenter = "0.3.3"
 serde = { version = "1.0.147", features = ["derive"] }
 indexmap = { version = "1.9.1", features = ["serde"] }
 num = { version = "0.4.0", features = ["serde"] }

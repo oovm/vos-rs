@@ -1,14 +1,14 @@
-use openapiv3::{Info, OpenAPI};
+use openapiv3::{Info, OpenAPI, Paths};
 use vos_error::VosResult;
 
-use vos_core::Project;
+use vos_core::{Document, Project};
 
 use crate::FromOpenAPI;
 
 impl FromOpenAPI {
     pub fn convert(&self, input: &OpenAPI) -> Project {
         let mut ctx = Context { project: Default::default() };
-        ctx.visit_root(&input);
+        input.visit(&mut ctx).unwrap();
         ctx.project
     }
 }
@@ -31,6 +31,24 @@ impl Visit for OpenAPI {
 
 impl Visit for Info {
     fn visit(&self, ctx: &mut Context) -> VosResult {
-        println!("{:#?}", self)
+        println!("{:#?}", self);
+
+        match &self.description {
+            Some(description) => {
+                ctx.project.description = Document::markdown(format!("# {}\n{}", self.title, description));
+            }
+            None => {
+                ctx.project.description = Document::markdown(format!("# {}", self.title));
+            }
+        }
+
+        Ok(())
+    }
+}
+
+impl Visit for Paths {
+    fn visit(&self, ctx: &mut Context) -> VosResult {
+        println!("{:#?}", self);
+        Ok(())
     }
 }

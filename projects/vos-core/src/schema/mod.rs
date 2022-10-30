@@ -3,13 +3,16 @@ use indexmap::IndexMap;
 use num::BigInt;
 use serde::{Deserialize, Serialize};
 
-use crate::{DecimalConstraint, DictConstraint, IntegerConstraint, ListConstraint, StringConstraint};
+use crate::{DecimalConstraint, DictConstraint, Document, IntegerConstraint, ListConstraint, StringConstraint};
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Project {
     pub kind: ProjectKind,
     pub edition: ProjectEdition,
+    pub description: Document,
 }
+
+pub mod document;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ProjectEdition {
