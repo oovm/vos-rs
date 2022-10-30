@@ -1,0 +1,30 @@
+[package]
+name = "vos-openapi"
+version = "0.0.0"
+authors = ["Aster <192607617@qq.com>"]
+description = "..."
+repository = "https://github.com/oovm/sub_projects"
+documentation = "https://docs.rs/vos-ast"
+readme = "Readme.md"
+license = "MPL-2.0"
+edition = "2021"
+
+[dependencies]
+
+
+[dependencies.vos-core]
+version= "0.0.0"
+path = "../vos-core"
+features = []
+
+[dependencies.vos-error]
+version= "0.3.0"
+features = ["num"]
+
+[dev-dependencies]
+
+[build-dependencies]
+peginator = "0.3.0"
+
+[features]
+default = []
