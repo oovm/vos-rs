@@ -4,6 +4,18 @@ use vos_error::VosResult;
 
 use super::*;
 
+#[derive(Debug, Clone, Default)]
+pub struct StringConstraint {
+    /// Minimum length of utf8 string
+    pub min_bytes: Option<u32>,
+    /// Maximum length of utf8 string
+    pub max_bytes: Option<u32>,
+    /// Minimum number of unicode characters
+    pub min_length: Option<u32>,
+    /// Maximum number of unicode characters
+    pub max_length: Option<u32>,
+}
+
 impl StringConstraint {
     /// ```vos
     /// type Integer: i32 {

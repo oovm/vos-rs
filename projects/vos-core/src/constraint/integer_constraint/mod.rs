@@ -1,10 +1,52 @@
+use serde::{Deserialize, Serialize};
+
 use super::*;
 
-impl Default for IntegerConstraint {
+/// ```vos
+/// n: i32[=1]
+/// n: i32[<1]
+/// n: i32[1..=2]
+/// n: i32[1 < n < 2]
+/// ```
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct IntegerConstraint {
+    pub kind: IntegerKind,
+    /// Minimum length of utf8 string
+    pub min: Option<BigInt>,
+    /// Maximum length of utf8 string
+    pub max: Option<BigInt>,
+    /// Minimum number of unicode characters
+    pub min_length: Option<BigInt>,
+    /// Maximum number of unicode characters
+    pub max_length: Option<BigInt>,
+    /// Check if number is multiple of `x`
+    pub multiple_of: Option<BigInt>,
+}
+
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+#[non_exhaustive]
+pub enum IntegerKind {
+    Integer,
+    Integer8,
+    Integer16,
+    Integer32,
+    Integer64,
+    Integer128,
+    Integer256,
+    Unsigned8,
+    Unsigned16,
+    Unsigned32,
+    Unsigned64,
+    Unsigned128,
+    Unsigned256,
+}
+
+impl Default for IntegerKind {
     fn default() -> Self {
-        Self { min: None, max: None, min_length: None, max_length: None, multiple_of: None }
+        Self::Integer32
     }
 }
+
 
 impl IntegerConstraint {}
 
