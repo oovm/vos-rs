@@ -19,10 +19,6 @@ version= "0.0.0"
 path = "../vos-core"
 features = []
 
-[dependencies.vos-error]
-version= "0.3.0"
-features = ["num"]
-
 [dev-dependencies]
 
 [build-dependencies]

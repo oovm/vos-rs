@@ -30,6 +30,14 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
+    pub fn insert<K, V>(&mut self, key: K, value: V) -> Option<Object>
+    where
+        K: Into<String>,
+        V: Into<Object>,
+    {
+        self.extra.insert(key.into(), value.into())
+    }
+
     pub fn short_name(&self) -> bool {
         todo!()
     }

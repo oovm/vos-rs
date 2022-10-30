@@ -10,6 +10,9 @@ pub use num::BigInt;
 #[cfg(feature = "url")]
 pub use url::Url;
 
+#[cfg(feature = "serde_json")]
+pub use serde_json::Value as Json;
+
 use crate::{VosError, VosErrorKind};
 
 #[cfg(feature = "bigdecimal")]
@@ -18,6 +21,9 @@ mod for_big_decimal;
 mod for_num;
 #[cfg(feature = "peginator")]
 mod for_peg;
+
+#[cfg(feature = "email_address")]
+mod for_email;
 
 impl From<DiagnosticError> for VosError {
     fn from(error: DiagnosticError) -> Self {

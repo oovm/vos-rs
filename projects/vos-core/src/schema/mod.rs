@@ -20,6 +20,7 @@ pub mod authors;
 pub mod document;
 pub mod edition;
 pub mod license;
+pub mod objects;
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Project {
@@ -65,8 +66,14 @@ pub enum Object {
     Integer(BigInt),
     Decimal(BigDecimal),
     Reference(String),
+    Text(Text),
     List(List),
     Dict(Dict),
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Text {
+    pub value: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

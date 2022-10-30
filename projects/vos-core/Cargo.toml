@@ -28,6 +28,7 @@ features = ["num", "bigdecimal", "email_address", "url"]
 peginator = "0.3.0"
 
 [features]
-default = ["validator", "faker"]
+default = ["json"]
 faker = []
 validator = []
+json = ["vos-error/serde_json"]

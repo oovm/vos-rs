@@ -1,6 +1,3 @@
-pub use vos_error::for_3rd::*;
-use vos_error::Validation;
-
 pub use self::{
     constraint::{
         decimal_constraint::DecimalConstraint,
@@ -15,9 +12,10 @@ pub use self::{
         document::{Document, DocumentKind},
         edition::ProjectEdition,
         license::ProjectLicense,
-        Dict, List, Project, ProjectKind, Schema,
+        Dict, List, Object, Project, ProjectKind, Schema,
     },
 };
+pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
 
 mod constraint;
 mod pretty_print;

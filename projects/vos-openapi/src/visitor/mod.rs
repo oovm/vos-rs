@@ -1,7 +1,6 @@
 use openapiv3::{Contact, Info, License, OpenAPI, Paths};
-use vos_error::{Validation, VosError, VosResult};
 
-use vos_core::{Document, Parser, Project, ProjectAuthor, ProjectLicense};
+use vos_core::{Document, Parser, Project, ProjectAuthor, ProjectLicense, Validation, VosError, VosResult};
 
 use crate::FromOpenAPI;
 
@@ -27,6 +26,7 @@ trait Visit {
 impl Visit for OpenAPI {
     fn visit(&self, ctx: &mut Context) -> VosResult {
         self.info.visit(ctx)?;
+        self.paths.visit(ctx)?;
 
         Ok(())
     }
