@@ -1,20 +1,33 @@
 use super::*;
+use bigdecimal::BigDecimal;
 
-
-
-#[derive(Debug, Clone)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct DecimalConstraint {
+    pub kind: DecimalKind,
     /// Minimum length of utf8 string
-    pub min: Option<BigInt>,
+    pub min: Option<BigDecimal>,
     /// Minimum number of unicode characters
     pub min_inclusive: bool,
     /// Maximum length of utf8 string
-    pub max: Option<BigInt>,
+    pub max: Option<BigDecimal>,
     /// Maximum number of unicode characters
     pub max_inclusive: bool,
+    #[serde(flatten)]
+    pub info: SharedConstraint,
 }
-impl Default for DecimalConstraint {
+
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+pub enum DecimalKind {
+    Decimal,
+    Decimal8,
+    Decimal16,
+    Decimal32,
+    Decimal64,
+    Decimal128,
+}
+
+impl Default for DecimalKind {
     fn default() -> Self {
-        Self { min: None, min_inclusive: true, max: None, max_inclusive: true }
+        Self::Decimal32
     }
 }

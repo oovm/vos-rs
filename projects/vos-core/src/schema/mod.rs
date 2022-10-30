@@ -1,42 +1,74 @@
+use bigdecimal::BigDecimal;
 use indexmap::IndexMap;
 use num::BigInt;
 use serde::{Deserialize, Serialize};
 
-use crate::{IntegerConstraint, StringConstraint};
+use crate::{DecimalConstraint, DictConstraint, IntegerConstraint, ListConstraint, StringConstraint};
 
-// mod parser;
-
-#[derive(Serialize, Deserialize)]
-pub struct Service {
-    pub kind: ServiceKind,
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct Project {
+    pub kind: ProjectKind,
+    pub edition: ProjectEdition,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Library {}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ProjectEdition {
+    year: i32,
+    major: u8,
+    patch: u8,
+}
 
-#[derive(Serialize, Deserialize)]
-pub enum ServiceKind {
+impl Default for ProjectEdition {
+    fn default() -> Self {
+        Self { year: 2020, major: 0, patch: 0 }
+    }
+}
+
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+pub enum ProjectKind {
     Server,
     Client,
+    Library,
 }
 
-#[derive(Serialize, Deserialize)]
+impl Default for ProjectKind {
+    fn default() -> Self {
+        Self::Library
+    }
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Module {
     schemas: IndexMap<String, Schema>,
     objects: IndexMap<String, Object>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum Schema {
     String(StringConstraint),
     Integer(IntegerConstraint),
+    Decimal(DecimalConstraint),
+    List(ListConstraint),
+    Dict(DictConstraint),
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Object {
     Boolean(bool),
     Integer(BigInt),
-    Decimal(f64),
+    Decimal(BigDecimal),
+    Reference(String),
+    List(List),
+    Dict(Dict),
+}
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct List {
+    pub value: Vec<Object>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Dict {
+    pub value: IndexMap<String, Object>,
 }

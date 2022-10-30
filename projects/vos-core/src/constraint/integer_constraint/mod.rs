@@ -1,5 +1,3 @@
-use serde::{Deserialize, Serialize};
-
 use super::*;
 
 /// ```vos
@@ -21,6 +19,10 @@ pub struct IntegerConstraint {
     pub max_length: Option<BigInt>,
     /// Check if number is multiple of `x`
     pub multiple_of: Option<BigInt>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub examples: Vec<BigInt>,
+    #[serde(flatten)]
+    pub info: SharedConstraint,
 }
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
@@ -46,7 +48,6 @@ impl Default for IntegerKind {
         Self::Integer32
     }
 }
-
 
 impl IntegerConstraint {}
 

@@ -1,10 +1,6 @@
-use std::str::FromStr;
-
-use vos_error::VosResult;
-
 use super::*;
 
-#[derive(Debug, Clone, Default)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct StringConstraint {
     /// Minimum length of utf8 string
     pub min_bytes: Option<u32>,
@@ -14,6 +10,9 @@ pub struct StringConstraint {
     pub min_length: Option<u32>,
     /// Maximum number of unicode characters
     pub max_length: Option<u32>,
+
+    #[serde(flatten)]
+    pub info: SharedConstraint,
 }
 
 impl StringConstraint {
