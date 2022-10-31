@@ -1,3 +1,5 @@
+use vos_core::Url;
+
 use super::*;
 
 impl Visit for Info {
@@ -70,6 +72,13 @@ impl Visit for License {
     type Output = ();
 
     fn visit(&self, ctx: &mut Context) -> Self::Output {
-        ctx.project.license = ProjectLicense::from_str(&self.name);
+        let url = match &self.url {
+            Some(s) => match Url::parse(s) {
+                Ok(s) => Some(s),
+                Err(_) => None,
+            },
+            None => None,
+        };
+        ctx.project.license = ProjectLicense::parse(&self.name, url, "");
     }
 }

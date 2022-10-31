@@ -26,7 +26,7 @@ impl Visit for Paths {
 impl Visit for PathItem {
     type Output = Endpoint;
 
-    fn visit(&self, ctx: &mut Context) -> Self::Output {
+    fn visit(&self, _: &mut Context) -> Self::Output {
         let mut ep = Endpoint::default();
 
         match &self.description {
