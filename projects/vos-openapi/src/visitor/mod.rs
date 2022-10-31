@@ -32,9 +32,9 @@ impl Visit for OpenAPI {
 
     fn visit(&self, ctx: &mut Context) -> Self::Output {
         self.info.visit(ctx);
-        match &self.external_docs {
-            None => {}
-            Some(std) => std.visit(ctx),
+        if let Some(s) = &self.external_docs {
+            let doc = s.visit(ctx);
+            ctx.project.document(&doc)
         }
         for server in &self.servers {
             match server.visit(ctx) {
@@ -43,19 +43,5 @@ impl Visit for OpenAPI {
             }
         }
         self.paths.visit(ctx);
-    }
-}
-
-impl Visit for Server {
-    type Output = VosResult<Environment>;
-
-    fn visit(&self, _: &mut Context) -> Self::Output {
-        let mut out = Environment::new(Url::from_str(&self.url)?);
-
-        if let Some(std) = &self.description {
-            out.document.push(std)
-        }
-
-        Ok(out)
     }
 }

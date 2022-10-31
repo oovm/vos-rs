@@ -1,5 +1,3 @@
-use vos_core::{Url, VosResult};
-
 use super::*;
 
 impl Visit for Info {
@@ -49,15 +47,15 @@ impl Visit for Contact {
 }
 
 impl Visit for ExternalDocumentation {
-    type Output = ();
+    type Output = String;
 
-    fn visit(&self, ctx: &mut Context) -> Self::Output {
-        if let Some(s) = &self.description {
-            ctx.project.document(s)
+    fn visit(&self, _: &mut Context) -> Self::Output {
+        for _ in &self.extensions {
+            // drop
         }
-        ctx.project.document(&self.url);
-        for (key, value) in &self.extensions {
-            println!("Drop external document {}: {:?}", key, value)
+        match &self.description {
+            None => format!("{}", self.url),
+            Some(s) => format!("{}\n{}", s, self.url),
         }
     }
 }
@@ -74,5 +72,19 @@ impl Visit for License {
             None => None,
         };
         ctx.project.license = ProjectLicense::parse(&self.name, url, "");
+    }
+}
+
+impl Visit for Server {
+    type Output = VosResult<Environment>;
+
+    fn visit(&self, _: &mut Context) -> Self::Output {
+        let mut out = Environment::new(Url::from_str(&self.url)?);
+
+        if let Some(std) = &self.description {
+            out.document.push(std)
+        }
+
+        Ok(out)
     }
 }

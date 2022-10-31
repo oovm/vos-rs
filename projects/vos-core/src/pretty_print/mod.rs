@@ -1,9 +1,10 @@
 use std::fmt::{Arguments, Display, Formatter, Write};
 
 use indenter::CodeFormatter;
+
 use vos_error::Validation;
 
-use crate::{Codegen, Project};
+use crate::{Codegen, Environment, Project};
 
 pub struct PrettyPrinter {}
 
@@ -41,11 +42,35 @@ where
     pub fn new(s: &'s mut T) -> Context<'s, T> {
         Self { buffer: CodeFormatter::new(s, "    ") }
     }
+    pub fn indent(&mut self) {
+        self.buffer.indent(1)
+    }
+    pub fn dedent(&mut self) {
+        self.buffer.dedent(1)
+    }
 
     pub fn visit_root(&mut self, root: &Project) -> std::fmt::Result {
-        write!(self, "{}", root.description)?;
-        self.write_str("service {")?;
+        write!(self, "\n{}", root.description)?;
+        writeln!(self, "\nservice {{")?;
+        self.indent();
+        writeln!(self, "\nedition: \"{}\",", root.edition)?;
+        writeln!(self, "\nversion: \"{}\",", root.version)?;
+        self.dedent();
+        writeln!(self, "\n}}")?;
+        writeln!(self, "\n")?;
+        for env in &root.environments {
+            self.visit_env(env)?
+        }
+        Ok(())
+    }
+    pub fn visit_env(&mut self, env: &Environment) -> std::fmt::Result {
+        write!(self, "\n{}", env.document)?;
+        writeln!(self, "\nenvironment {{")?;
+        self.indent();
+        writeln!(self, "\nhost: \"{}\"", env.host)?;
 
+        self.dedent();
+        writeln!(self, "}}")?;
         Ok(())
     }
 }

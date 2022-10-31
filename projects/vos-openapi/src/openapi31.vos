@@ -5,3 +5,11 @@
 /// See AsyncAPI example
 /// https://mermade.github.io/shins/asyncapi.html
 service {
+    edition: "2020.0.0",
+    version: "0.0.0",
+}
+
+
+environment {
+    host: "http://petstore.swagger.io/v2"
+}

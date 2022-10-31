@@ -1,3 +1,4 @@
+use json5::from_str;
 use std::{fs::File, io::Write};
 
 use openapiv3::OpenAPI;
@@ -7,7 +8,7 @@ mod visitor;
 #[test]
 fn main() {
     let data = include_str!("openapi31.json");
-    let openapi: OpenAPI = json5::from_str(data).expect("Could not deserialize input");
+    let openapi: OpenAPI = from_str(data).expect("Could not deserialize input");
     let cvt = FromOpenAPI {};
     let out = cvt.parse(&openapi).unwrap();
     // let out = json5::to_string(&out).unwrap();

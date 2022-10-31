@@ -17,7 +17,9 @@ voml-collection = "0.3.0"
 http = "0.2.8"
 
 [dependencies.vos-error]
-version = "0.3.2"
+#version = "0.3.2"
+git = "https://github.com/voml/vos-rs"
+rev = "1f7c3540"
 features = ["num", "bigdecimal", "email_address", "url", "semver"]
 
 
