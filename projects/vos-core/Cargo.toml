@@ -14,17 +14,13 @@ indenter = { version = "0.3.3", features = ["std"] }
 serde = { version = "1.0.147", features = ["derive"] }
 indexmap = { version = "1.9.1", features = ["serde"] }
 num = { version = "0.4.0", features = ["serde"] }
-
+voml-collection = "0.2.0"
 
 [dependencies.vos-error]
-version = "0.3.0"
-path = "../vos-error"
+version = "0.3.1"
 features = ["num", "bigdecimal", "email_address", "url", "serde_json"]
 
-[dependencies.voml-collection]
-version = "0.1.1"
-path = "../voml-collection"
-features = []
+
 
 [dev-dependencies]
 

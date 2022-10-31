@@ -32,11 +32,15 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
-    pub fn new(name: impl Into<String>, email: &str) -> VosResult<Self> {
-        let name = name.into();
+    pub fn new(name: &str, email: &str) -> VosResult<Self> {
+        if name.is_empty() {
+            return Err(VosError::parse_error("Project author missing name"));
+        }
+        if email.is_empty() {
+            return Err(VosError::parse_error("Project author missing email"));
+        }
         let email = EmailAddress::from_str(email)?;
-
-        Ok(Self { name, email, extra: Default::default() })
+        Ok(Self { name: name.to_owned(), email, extra: Default::default() })
     }
 
     pub fn insert<K, V>(&mut self, key: K, value: V) -> Option<Object>

@@ -1,5 +1,6 @@
-use super::*;
 use std::fmt::{Display, Formatter};
+
+use super::*;
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Document {
@@ -30,5 +31,14 @@ impl Display for Document {
 impl Document {
     pub fn markdown(text: impl Into<String>) -> Self {
         Self { kind: DocumentKind::GFM, text: text.into() }
+    }
+    pub fn push(&mut self, document: &str) {
+        if document.trim().is_empty() {
+            return;
+        }
+        if !self.text.is_empty() {
+            self.text.push('\n')
+        }
+        self.text.push_str(document);
     }
 }

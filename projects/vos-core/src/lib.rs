@@ -14,6 +14,7 @@ pub use self::{
         authors::ProjectAuthor,
         document::{Document, DocumentKind},
         edition::ProjectEdition,
+        environment::Environment,
         license::ProjectLicense,
         objects::Object,
         Project, ProjectKind, Schema,

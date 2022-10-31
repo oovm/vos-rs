@@ -1,5 +1,5 @@
 [package]
-name = "vos-openapi"
+name = "vos-from-openapi"
 version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."

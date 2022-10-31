@@ -1,28 +1,16 @@
-use std::str::FromStr;
-
-use vos_core::EmailAddress;
-
 use super::*;
 
 impl Visit for Info {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
-        match &self.description {
-            Some(description) => {
-                ctx.project.description = Document::markdown(format!("# {}\n{}", self.title, description));
-            }
-            None => {
-                ctx.project.description = Document::markdown(format!("# {}", self.title));
-            }
+    fn visit(&self, ctx: &mut Context) {
+        ctx.project.document(&format!("# {}", self.title));
+        if let Some(s) = &self.description {
+            ctx.project.document(s)
         }
         if let Some(v) = &self.contact {
-            if let Err(e) = v.visit(ctx) {
-                ctx.errors.push(e)
-            }
+            v.visit(ctx)
         }
         if let Some(v) = &self.license {
-            if let Err(e) = v.visit(ctx) {
-                ctx.errors.push(e)
-            }
+            v.visit(ctx)
         }
         if let Some(value) = &self.terms_of_service {
             ctx.project.extra("terms_of_service", value);
@@ -30,21 +18,26 @@ impl Visit for Info {
         for (key, value) in &self.extensions {
             ctx.project.extra(key, value);
         }
-        Ok(())
     }
 }
 
 impl Visit for Contact {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
-        let name = match &self.email {
-            Some(s) => s.clone(),
-            None => return Err(VosError::parse_error("Project author missing name")),
+    fn visit(&self, ctx: &mut Context) {
+        let name = match &self.name {
+            Some(s) => s.as_str(),
+            None => "",
         };
         let email = match &self.email {
-            Some(s) => EmailAddress::from_str(s)?,
-            None => return Err(VosError::parse_error("Project author missing email")),
+            Some(s) => s.as_str(),
+            None => "",
         };
-        let mut author = ProjectAuthor { name, email, extra: Default::default() };
+        let mut author = match ProjectAuthor::new(name, email) {
+            Ok(s) => s,
+            Err(e) => {
+                ctx.errors.push(e);
+                return;
+            }
+        };
         if let Some(s) = &self.url {
             author.insert("homepage", s);
         }
@@ -52,14 +45,23 @@ impl Visit for Contact {
             author.insert(key, value);
         }
         ctx.project.authors.insert(author);
-        Ok(())
+    }
+}
+
+impl Visit for ExternalDocumentation {
+    fn visit(&self, ctx: &mut Context) {
+        if let Some(s) = &self.description {
+            ctx.project.document(s)
+        }
+        ctx.project.document(&self.url);
+        for (key, value) in &self.extensions {
+            println!("Drop external document {}: {:?}", key, value)
+        }
     }
 }
 
 impl Visit for License {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
+    fn visit(&self, ctx: &mut Context) {
         ctx.project.license = ProjectLicense::Unknown;
-
-        Ok(())
     }
 }

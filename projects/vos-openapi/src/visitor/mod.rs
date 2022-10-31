@@ -1,15 +1,16 @@
-use openapiv3::{Contact, Info, License, OpenAPI, Paths};
+use openapiv3::{Contact, ExternalDocumentation, Info, License, OpenAPI, Paths};
 
-use vos_core::{Document, Parser, Project, ProjectAuthor, ProjectLicense, Validation, VosError, VosResult};
+use vos_core::{Parser, Project, ProjectAuthor, ProjectLicense, Validation, VosError};
 
 use crate::FromOpenAPI;
 
 mod info;
+mod path;
 
 impl Parser<OpenAPI> for FromOpenAPI {
     fn parse(&self, source: &OpenAPI) -> Validation<Project> {
         let mut ctx = Context { project: Default::default(), errors: vec![] };
-        source.visit(&mut ctx).unwrap();
+        source.visit(&mut ctx);
         Validation::Success { value: ctx.project, diagnostics: vec![] }
     }
 }
@@ -20,21 +21,17 @@ struct Context {
 }
 
 trait Visit {
-    fn visit(&self, ctx: &mut Context) -> VosResult;
+    type Output = ();
+    fn visit(&self, ctx: &mut Context) -> Self::Output;
 }
 
 impl Visit for OpenAPI {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
-        self.info.visit(ctx)?;
-        self.paths.visit(ctx)?;
-
-        Ok(())
-    }
-}
-
-impl Visit for Paths {
-    fn visit(&self, ctx: &mut Context) -> VosResult {
-        println!("{:#?}", self);
-        Ok(())
+    fn visit(&self, ctx: &mut Context) {
+        self.info.visit(ctx);
+        match &self.external_docs {
+            None => {}
+            Some(std) => std.visit(ctx),
+        }
+        self.paths.visit(ctx);
     }
 }

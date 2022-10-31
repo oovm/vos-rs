@@ -1,9 +1,9 @@
 [workspace]
 members = ["projects/*"]
 default-members = [
-    "projects/voml-collection",
     "projects/vos-error",
-#    "projects/vos-cli",
+    "projects/vos-core",
+#    "projects/vos-openapi",
 ]
 exclude = [
     "projects/.DS_Store",

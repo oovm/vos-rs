@@ -6,7 +6,6 @@ use std::{
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
-
 use vos_error::{for_3rd::EmailAddress, VosResult};
 
 use crate::*;
@@ -14,6 +13,7 @@ use crate::*;
 pub mod authors;
 pub mod document;
 pub mod edition;
+pub mod environment;
 pub mod license;
 pub mod objects;
 
@@ -23,7 +23,9 @@ pub struct Project {
     pub license: ProjectLicense,
     pub edition: ProjectEdition,
     pub authors: BTreeSet<ProjectAuthor>,
-    pub description: Document,
+    pub description: String,
+    pub document_kind: DocumentKind,
+    pub environments: Vec<Environment>,
     pub extra: BTreeMap<String, Object>,
 }
 
@@ -63,5 +65,9 @@ impl Project {
         V: Into<Object>,
     {
         self.extra.insert(key.into(), value.into())
+    }
+    #[inline]
+    pub fn document(&mut self, document: &str) {
+        push_document(&mut self.description, document)
     }
 }
