@@ -20,14 +20,16 @@ use crate::{VosError, VosErrorKind};
 
 #[cfg(feature = "bigdecimal")]
 mod for_big_decimal;
+#[cfg(feature = "email_address")]
+mod for_email;
 #[cfg(feature = "num")]
 mod for_num;
 #[cfg(feature = "peginator")]
 mod for_peg;
 #[cfg(feature = "semver")]
 mod for_semver;
-#[cfg(feature = "email_address")]
-mod for_email;
+#[cfg(feature = "url")]
+mod for_url;
 
 impl From<DiagnosticError> for VosError {
     fn from(error: DiagnosticError) -> Self {

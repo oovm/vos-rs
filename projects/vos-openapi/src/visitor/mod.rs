@@ -38,8 +38,8 @@ impl Visit for OpenAPI {
         }
         for server in &self.servers {
             match server.visit(ctx) {
-                Ok(o) => ctx.project.environments,
-                Err(_) => {}
+                Ok(o) => ctx.project.environment(o),
+                Err(e) => ctx.errors.push(e),
             }
         }
         self.paths.visit(ctx);
