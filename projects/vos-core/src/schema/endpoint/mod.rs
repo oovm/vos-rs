@@ -4,11 +4,10 @@ use super::*;
 pub struct Endpoint {
     pub request: String,
     pub response: String,
-
     pub get: Request,
-
     pub document: Document,
 }
+
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Request {

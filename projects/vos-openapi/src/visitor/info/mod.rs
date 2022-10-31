@@ -1,4 +1,4 @@
-use vos_core::Url;
+use vos_core::{Url, VosResult};
 
 use super::*;
 
@@ -11,7 +11,12 @@ impl Visit for Info {
             ctx.project.document(s)
         }
         if let Some(v) = &self.contact {
-            v.visit(ctx)
+            match v.visit(ctx) {
+                Ok(o) => {
+                    ctx.project.authors.insert(o);
+                }
+                Err(e) => ctx.errors.push(e),
+            }
         }
         if let Some(v) = &self.license {
             v.visit(ctx)
@@ -26,31 +31,20 @@ impl Visit for Info {
 }
 
 impl Visit for Contact {
-    type Output = ();
+    type Output = VosResult<ProjectAuthor>;
 
-    fn visit(&self, ctx: &mut Context) -> Self::Output {
-        let name = match &self.name {
-            Some(s) => s.as_str(),
-            None => "",
-        };
-        let email = match &self.email {
-            Some(s) => s.as_str(),
-            None => "",
-        };
-        let mut author = match ProjectAuthor::new(name, email) {
-            Ok(s) => s,
-            Err(e) => {
-                ctx.errors.push(e);
-                return;
-            }
-        };
+    fn visit(&self, _: &mut Context) -> Self::Output {
+        let mut author = ProjectAuthor::new(
+            self.name.as_ref().unwrap_or(&String::new()).as_str(),
+            self.email.as_ref().unwrap_or(&String::new()).as_str(),
+        )?;
         if let Some(s) = &self.url {
             author.insert("homepage", s);
         }
         for (key, value) in &self.extensions {
             author.insert(key, value);
         }
-        ctx.project.authors.insert(author);
+        Ok(author)
     }
 }
 

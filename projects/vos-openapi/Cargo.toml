@@ -2,9 +2,9 @@
 name = "vos-from-openapi"
 version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
-description = "..."
+description = "Convert openapi to [vos]()"
 repository = "https://github.com/oovm/sub_projects"
-documentation = "https://docs.rs/vos-ast"
+documentation = "https://docs.rs/vos-from-openapi"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
@@ -15,9 +15,9 @@ json5 = "0.4.1"
 
 
 [dependencies.vos-core]
-version= "0.0.0"
+version= "0.1.0"
 path = "../vos-core"
-features = []
+features = ["json"]
 
 [dev-dependencies]
 

@@ -53,3 +53,10 @@ impl ProjectAuthor {
         todo!()
     }
 }
+
+impl Project {
+    #[inline]
+    pub fn author(&mut self, author: ProjectAuthor) {
+        self.authors.insert(author);
+    }
+}

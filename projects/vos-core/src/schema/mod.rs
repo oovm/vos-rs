@@ -1,3 +1,6 @@
+use crate::*;
+use indexmap::IndexMap;
+use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, BTreeSet},
@@ -5,11 +8,10 @@ use std::{
     fmt::{Display, Formatter},
     str::FromStr,
 };
-use vos_error::for_3rd::{Url, Version};
-use indexmap::IndexMap;
-use serde::{Deserialize, Serialize};
-use vos_error::{for_3rd::EmailAddress, VosResult};
-use crate::*;
+use vos_error::{
+    for_3rd::{EmailAddress, Url, Version},
+    VosResult,
+};
 
 pub mod authors;
 pub mod document;
@@ -23,11 +25,11 @@ use vos_error::VosError;
 pub struct Project {
     pub kind: ProjectKind,
     pub license: ProjectLicense,
-    pub edition: Version ,
+    pub edition: Version,
     pub version: Version,
     pub authors: BTreeSet<ProjectAuthor>,
     pub description: Document,
-    pub environments: Vec<Environment>,
+    pub environments: BTreeSet<Environment>,
     pub endpoints: BTreeMap<String, Endpoint>,
     pub extra: BTreeMap<String, Object>,
 }
@@ -37,25 +39,13 @@ impl Default for Project {
         Self {
             kind: Default::default(),
             license: Default::default(),
-            edition: Version {
-                major: 2020,
-                minor: 0,
-                patch: 0,
-                pre: Default::default(),
-                build: Default::default()
-            },
-            version: Version {
-                major: 0,
-                minor: 0,
-                patch: 0,
-                pre: Default::default(),
-                build: Default::default()
-            },
+            edition: Version { major: 2020, minor: 0, patch: 0, pre: Default::default(), build: Default::default() },
+            version: Version { major: 0, minor: 0, patch: 0, pre: Default::default(), build: Default::default() },
             authors: Default::default(),
             description: Default::default(),
-            environments: vec![],
+            environments: Default::default(),
             endpoints: Default::default(),
-            extra: Default::default()
+            extra: Default::default(),
         }
     }
 }

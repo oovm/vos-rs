@@ -1,6 +1,8 @@
-use openapiv3::{Contact, ExternalDocumentation, Info, License, OpenAPI, Paths};
+use std::str::FromStr;
 
-use vos_core::{Parser, Project, ProjectAuthor, ProjectLicense, Validation, VosError};
+use openapiv3::{Contact, ExternalDocumentation, Info, License, OpenAPI, Paths, Server};
+
+use vos_core::{Environment, Parser, Project, ProjectAuthor, ProjectLicense, Url, Validation, VosError, VosResult};
 
 use crate::FromOpenAPI;
 
@@ -34,6 +36,26 @@ impl Visit for OpenAPI {
             None => {}
             Some(std) => std.visit(ctx),
         }
+        for server in &self.servers {
+            match server.visit(ctx) {
+                Ok(o) => ctx.project.environments,
+                Err(_) => {}
+            }
+        }
         self.paths.visit(ctx);
+    }
+}
+
+impl Visit for Server {
+    type Output = VosResult<Environment>;
+
+    fn visit(&self, _: &mut Context) -> Self::Output {
+        let mut out = Environment::new(Url::from_str(&self.url)?);
+
+        if let Some(std) = &self.description {
+            out.document.push(std)
+        }
+
+        Ok(out)
     }
 }

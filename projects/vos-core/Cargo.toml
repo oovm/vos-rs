@@ -1,6 +1,6 @@
 [package]
 name = "vos-core"
-version = "0.0.0"
+version = "0.1.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
 repository = "https://github.com/oovm/sub_projects"
@@ -13,13 +13,12 @@ edition = "2021"
 indenter = { version = "0.3.3", features = ["std"] }
 serde = { version = "1.0.147", features = ["derive"] }
 indexmap = { version = "1.9.1", features = ["serde"] }
-voml-collection = "0.2.0"
+voml-collection = "0.3.0"
 http = "0.2.8"
 
 [dependencies.vos-error]
 version = "0.3.2"
-path = "../vos-error"
-features = ["num", "bigdecimal", "email_address", "url", "serde_json", "semver"]
+features = ["num", "bigdecimal", "email_address", "url", "semver"]
 
 
 
@@ -33,4 +32,4 @@ peginator = "0.3.0"
 default = []
 faker = []
 validator = []
-#json = ["vos-error/serde_json"]
+json = ["vos-error/serde_json"]
