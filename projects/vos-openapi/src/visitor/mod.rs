@@ -21,12 +21,14 @@ struct Context {
 }
 
 trait Visit {
-    type Output = ();
+    type Output;
     fn visit(&self, ctx: &mut Context) -> Self::Output;
 }
 
 impl Visit for OpenAPI {
-    fn visit(&self, ctx: &mut Context) {
+    type Output = ();
+
+    fn visit(&self, ctx: &mut Context) -> Self::Output {
         self.info.visit(ctx);
         match &self.external_docs {
             None => {}

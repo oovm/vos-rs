@@ -1,7 +1,9 @@
 use super::*;
 
 impl Visit for Info {
-    fn visit(&self, ctx: &mut Context) {
+    type Output = ();
+
+    fn visit(&self, ctx: &mut Context) -> Self::Output {
         ctx.project.document(&format!("# {}", self.title));
         if let Some(s) = &self.description {
             ctx.project.document(s)
@@ -22,7 +24,9 @@ impl Visit for Info {
 }
 
 impl Visit for Contact {
-    fn visit(&self, ctx: &mut Context) {
+    type Output = ();
+
+    fn visit(&self, ctx: &mut Context) -> Self::Output {
         let name = match &self.name {
             Some(s) => s.as_str(),
             None => "",
@@ -49,7 +53,9 @@ impl Visit for Contact {
 }
 
 impl Visit for ExternalDocumentation {
-    fn visit(&self, ctx: &mut Context) {
+    type Output = ();
+
+    fn visit(&self, ctx: &mut Context) -> Self::Output {
         if let Some(s) = &self.description {
             ctx.project.document(s)
         }
@@ -61,7 +67,9 @@ impl Visit for ExternalDocumentation {
 }
 
 impl Visit for License {
-    fn visit(&self, ctx: &mut Context) {
-        ctx.project.license = ProjectLicense::Unknown;
+    type Output = ();
+
+    fn visit(&self, ctx: &mut Context) -> Self::Output {
+        ctx.project.license = ProjectLicense::from_str(&self.name);
     }
 }

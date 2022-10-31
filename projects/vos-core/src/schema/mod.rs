@@ -1,7 +1,9 @@
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, BTreeSet},
+    convert::Infallible,
     fmt::{Display, Formatter},
+    str::FromStr,
 };
 
 use indexmap::IndexMap;
@@ -13,6 +15,7 @@ use crate::*;
 pub mod authors;
 pub mod document;
 pub mod edition;
+pub mod endpoint;
 pub mod environment;
 pub mod license;
 pub mod objects;
@@ -23,9 +26,9 @@ pub struct Project {
     pub license: ProjectLicense,
     pub edition: ProjectEdition,
     pub authors: BTreeSet<ProjectAuthor>,
-    pub description: String,
-    pub document_kind: DocumentKind,
+    pub description: Document,
     pub environments: Vec<Environment>,
+    pub endpoints: BTreeMap<String, Endpoint>,
     pub extra: BTreeMap<String, Object>,
 }
 
@@ -59,6 +62,7 @@ pub enum Schema {
 }
 
 impl Project {
+    #[inline]
     pub fn extra<K, V>(&mut self, key: K, value: V) -> Option<Object>
     where
         K: Into<String>,
@@ -68,6 +72,6 @@ impl Project {
     }
     #[inline]
     pub fn document(&mut self, document: &str) {
-        push_document(&mut self.description, document)
+        self.description.push(document)
     }
 }
