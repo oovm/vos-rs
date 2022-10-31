@@ -1,6 +1,6 @@
 [package]
 name = "vos-error"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["Aster <192607617@qq.com>"]
 description = "Virtual Object Schema shared error types"
 repository = "https://github.com/voml/vos-rs"
@@ -19,7 +19,7 @@ serde_json = { version = "1.0.87", optional = true }
 url = { version = "2.3.1", features = ["serde"], optional = true }
 email_address = { version = "0.2.3", features = ["serde"], optional = true }
 uuid = { version = "1.2.1", features = ["serde"], optional = true }
-
+semver = { version = "1.0.14", features = ["serde"], optional = true }
 
 #[dependencies.diagnostic]
 #git = "https://github.com/oovm/diagnostic-rs"

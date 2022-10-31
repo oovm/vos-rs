@@ -10,7 +10,6 @@ pub use self::{
     schema::{
         authors::ProjectAuthor,
         document::{Document, DocumentKind},
-        edition::ProjectEdition,
         endpoint::Endpoint,
         environment::Environment,
         license::ProjectLicense,

@@ -6,9 +6,12 @@ use diagnostic::{DiagnosticError, DiagnosticLevel};
 #[cfg(feature = "email_address")]
 pub use email_address::EmailAddress;
 #[cfg(feature = "num")]
-pub use num::BigInt;
+pub use num::{BigInt, Zero};
 #[cfg(feature = "url")]
 pub use url::Url;
+
+#[cfg(feature = "semver")]
+pub use semver::Version;
 
 #[cfg(feature = "serde_json")]
 pub use serde_json::Value as Json;
@@ -21,7 +24,8 @@ mod for_big_decimal;
 mod for_num;
 #[cfg(feature = "peginator")]
 mod for_peg;
-
+#[cfg(feature = "semver")]
+mod for_semver;
 #[cfg(feature = "email_address")]
 mod for_email;
 
