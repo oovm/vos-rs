@@ -20,6 +20,8 @@ pub mod endpoint;
 pub mod environment;
 pub mod license;
 pub mod objects;
+pub mod route;
+
 use vos_error::VosError;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Project {

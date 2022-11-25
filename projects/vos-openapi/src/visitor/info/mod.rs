@@ -46,20 +46,6 @@ impl Visit for Contact {
     }
 }
 
-impl Visit for ExternalDocumentation {
-    type Output = String;
-
-    fn visit(&self, _: &mut Context) -> Self::Output {
-        for _ in &self.extensions {
-            // drop
-        }
-        match &self.description {
-            None => format!("{}", self.url),
-            Some(s) => format!("{}\n{}", s, self.url),
-        }
-    }
-}
-
 impl Visit for License {
     type Output = ();
 

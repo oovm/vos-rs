@@ -10,11 +10,11 @@ VosStatementNode =
 
 @position
 TableDeclareNode = TableDeclare id:IdentifierNode '{' {body:DeclareBodyNode} '}';
-TableDeclare = 'table';
+TableDeclare = 'table' | 'class';
 
 @position
 StructDeclareNode = StructDeclare id:IdentifierNode '{' {body:DeclareBodyNode} '}';
-StructDeclare = 'class' | 'struct' | 'structure';
+StructDeclare = 'struct' | 'structure';
 
 @position
 DefineStatementNode = DefineDeclare id:IdentifierNode '{' {body:DeclareBodyNode} '}';

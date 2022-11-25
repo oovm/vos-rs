@@ -14,7 +14,8 @@ table Color2 {
 }
 
 enum Color3 {
-	Red
+	Red,
+	Blue,
 }
 
 union Color4 {
