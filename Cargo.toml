@@ -1,7 +1,6 @@
 [workspace]
 members = ["projects/*"]
 default-members = [
-    "projects/vos-error",
     "projects/vos-core",
 #    "projects/vos-openapi",
 ]

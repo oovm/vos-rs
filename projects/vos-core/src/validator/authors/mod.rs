@@ -1,5 +1,5 @@
 use super::*;
-use vos_error::VosResult;
+use vos_error::QResult;
 
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct ProjectAuthor {
@@ -31,7 +31,7 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
-    pub fn email(email: &str) -> VosResult<EmailAddress> {}
+    pub fn email(email: &str) -> QResult<EmailAddress> {}
 
     pub fn short_name(&self) -> bool {
         todo!()

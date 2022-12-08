@@ -10,7 +10,7 @@ use std::{
 };
 use vos_error::{
     for_3rd::{EmailAddress, Url, Version},
-    VosResult,
+    QResult,
 };
 
 pub mod authors;

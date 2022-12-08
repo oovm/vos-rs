@@ -5,7 +5,7 @@ use crate::parser::vos::{DictItem, ListItem, SpecialNode};
 use super::*;
 
 impl FieldStatementNode {
-    pub fn as_field(&self) -> VosResult<FieldStatement> {
+    pub fn as_field(&self) -> QResult<FieldStatement> {
         let mut field = FieldStatement::default();
         field.name = self.key.as_identifier();
         field.typing = self.r#type.as_field_type()?;
@@ -15,13 +15,13 @@ impl FieldStatementNode {
 }
 
 impl ConstraintStatementNode {
-    pub fn as_constraint(&self) -> VosResult<ConstraintStatement> {
+    pub fn as_constraint(&self) -> QResult<ConstraintStatement> {
         Ok(ConstraintStatement { name: self.key.as_identifier(), value: as_value(&self.value)? })
     }
 }
 
 impl ValueNode {
-    pub fn as_value(&self) -> VosResult<ValueStatement> {
+    pub fn as_value(&self) -> QResult<ValueStatement> {
         match self {
             ValueNode::SpecialNode(v) => Ok(v.as_value()),
             ValueNode::NumNode(v) => v.as_value(),
@@ -69,10 +69,10 @@ impl SpecialNode {
 }
 
 impl NumNode {
-    pub fn as_num(&self) -> VosResult<BigDecimal> {
+    pub fn as_num(&self) -> QResult<BigDecimal> {
         Ok(BigDecimal::from_str(&self.string)?)
     }
-    pub fn as_value(&self) -> VosResult<ValueStatement> {
+    pub fn as_value(&self) -> QResult<ValueStatement> {
         Ok(ValueStatement { kind: ValueKind::Number(self.as_num()?), span: self.position.clone() })
     }
 }
@@ -88,7 +88,7 @@ impl NamespaceNode {
     pub fn as_value(&self) -> ValueStatement {
         ValueStatement { kind: ValueKind::Symbol(self.as_namespace()), span: self.position.clone() }
     }
-    pub fn as_generic(&self) -> VosResult<GenericStatement> {
+    pub fn as_generic(&self) -> QResult<GenericStatement> {
         let generic = GenericStatement::Arguments { arguments: vec![] };
         Ok(generic)
     }

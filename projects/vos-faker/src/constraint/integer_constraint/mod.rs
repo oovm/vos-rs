@@ -16,7 +16,7 @@ impl IntegerConstraint {
     ///     .min: -1
     /// }
     /// ```
-    pub fn min(&mut self, n: &str, inclusive: bool) -> VosResult {
+    pub fn min(&mut self, n: &str, inclusive: bool) -> QResult {
         let mut limit = BigInt::from_str(n)?;
         if !inclusive {
             limit += 1;
@@ -31,7 +31,7 @@ impl IntegerConstraint {
     ///     .max: +1
     /// }
     /// ```
-    pub fn max(mut self, n: &str, inclusive: bool) -> VosResult {
+    pub fn max(mut self, n: &str, inclusive: bool) -> QResult {
         let mut limit = BigInt::from_str(n)?;
         if !inclusive {
             limit -= 1;
@@ -44,7 +44,7 @@ impl IntegerConstraint {
     ///     .positive
     /// }
     /// ```
-    pub fn positive(mut self) -> VosResult {
+    pub fn positive(mut self) -> QResult {
         self.min = Some(BigInt::zero());
         Ok(())
     }
@@ -53,7 +53,7 @@ impl IntegerConstraint {
     ///     .positive
     /// }
     /// ```
-    pub fn negative(mut self) -> VosResult {
+    pub fn negative(mut self) -> QResult {
         self.max = Some(BigInt::zero());
         Ok(())
     }

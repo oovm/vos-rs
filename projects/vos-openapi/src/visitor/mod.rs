@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use openapiv3::{Components, Contact, ExternalDocumentation, Info, License, OpenAPI, Paths, ReferenceOr, RequestBody, Server};
 
-use vos_core::{Document, Environment, License, Parser, Project, ProjectAuthor, Url, Validation, VosError, VosResult};
+use vos_core::{Document, Environment, License, Parser, Project, ProjectAuthor, QResult, Url, Validation, VosError};
 
 use crate::FromOpenAPI;
 

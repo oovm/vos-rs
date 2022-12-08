@@ -6,7 +6,7 @@ impl GenericNum1 {
     /// - `=1` => `=1`
     /// - `>1` => `1`
     /// - `>=1` => `1`
-    pub fn as_generic(&self) -> VosResult<GenericStatement> {
+    pub fn as_generic(&self) -> QResult<GenericStatement> {
         let number = self.num.as_num()?;
         let (symbol, inclusive) = self.token.as_order();
         let generic = GenericStatement::NumberBound { symbol, inclusive, number };
@@ -15,7 +15,7 @@ impl GenericNum1 {
 }
 
 impl GenericNum2 {
-    pub fn as_generic(&self) -> VosResult<GenericStatement> {
+    pub fn as_generic(&self) -> QResult<GenericStatement> {
         let min = self.num1.as_num()?;
         let max = self.num2.as_num()?;
         let max_inclusive = self.token.inclusive();
@@ -25,7 +25,7 @@ impl GenericNum2 {
 }
 
 impl GenericNum3 {
-    pub fn as_generic(&self) -> VosResult<GenericStatement> {
+    pub fn as_generic(&self) -> QResult<GenericStatement> {
         let min = self.num1.as_num()?;
         let max = self.num2.as_num()?;
         let min_order = self.token1.as_order();

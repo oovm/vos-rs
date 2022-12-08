@@ -30,7 +30,7 @@ impl Ord for ProjectAuthor {
 }
 
 impl ProjectAuthor {
-    pub fn new(name: &str, email: &str) -> VosResult<Self> {
+    pub fn new(name: &str, email: &str) -> QResult<Self> {
         if name.is_empty() {
             return Err(VosError::parse_error("Project author missing name"));
         }

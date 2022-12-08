@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use vos_error::VosResult;
+use vos_error::QResult;
 
 use super::*;
 
@@ -10,7 +10,7 @@ impl StringConstraint {
     ///     .min: -1
     /// }
     /// ```
-    pub fn min_bytes(&mut self, n: &str) -> VosResult {
+    pub fn min_bytes(&mut self, n: &str) -> QResult {
         self.min_bytes = Some(u32::from_str(n)?);
         Ok(())
     }
@@ -19,7 +19,7 @@ impl StringConstraint {
     ///     .max: +1
     /// }
     /// ```
-    pub fn max_bytes(&mut self, n: &str) -> VosResult {
+    pub fn max_bytes(&mut self, n: &str) -> QResult {
         self.max_bytes = Some(u32::from_str(n)?);
         Ok(())
     }
@@ -33,7 +33,7 @@ impl StringConstraint {
     ///     .min: -1
     /// }
     /// ```
-    pub fn min_length(&mut self, n: &str) -> VosResult {
+    pub fn min_length(&mut self, n: &str) -> QResult {
         self.min_length = Some(u32::from_str(n)?);
         Ok(())
     }
@@ -42,7 +42,7 @@ impl StringConstraint {
     ///     .max: +1
     /// }
     /// ```
-    pub fn max_length(&mut self, n: &str) -> VosResult {
+    pub fn max_length(&mut self, n: &str) -> QResult {
         self.max_length = Some(u32::from_str(n)?);
         Ok(())
     }

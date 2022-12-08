@@ -3,7 +3,7 @@ use std::{cmp::Ordering, ops::Range, str::FromStr};
 use bigdecimal::BigDecimal;
 use peginator::PegParser;
 
-use vos_error::{DuplicateDeclare, FileID, Validation, VosError, VosResult};
+use vos_error::{DuplicateDeclare, FileID, QResult, Validation, VosError};
 
 use crate::{
     ast::{TableKind, TableStatement, VosAST, VosStatement},
@@ -39,7 +39,7 @@ pub fn as_range(range: &Range<usize>) -> Range<u32> {
     Range { start: range.start as u32, end: range.end as u32 }
 }
 
-fn as_value(v: &Option<ValueNode>) -> VosResult<ValueStatement> {
+fn as_value(v: &Option<ValueNode>) -> QResult<ValueStatement> {
     match v {
         Some(s) => s.as_value(),
         None => Ok(ValueStatement::default()),
@@ -47,13 +47,13 @@ fn as_value(v: &Option<ValueNode>) -> VosResult<ValueStatement> {
 }
 
 impl VosVisitor {
-    pub fn parse_text(text: String, file_id: FileID) -> VosResult<Self> {
+    pub fn parse_text(text: String, file_id: FileID) -> QResult<Self> {
         let mut parser = Self { ast: Default::default(), file_id, text, errors: vec![] };
         parser.do_parse()?;
         Ok(parser)
     }
 
-    fn do_parse(&mut self) -> VosResult {
+    fn do_parse(&mut self) -> QResult {
         for statement in VosParser::parse(&self.text)?.statements {
             match self.visit_statement(statement) {
                 Ok(_) => {}
@@ -62,7 +62,7 @@ impl VosVisitor {
         }
         return Ok(());
     }
-    fn visit_statement(&mut self, node: VosStatementNode) -> VosResult {
+    fn visit_statement(&mut self, node: VosStatementNode) -> QResult {
         match node {
             VosStatementNode::StructDeclareNode(s) => {
                 let mut table = TableStatement::default();
@@ -84,7 +84,7 @@ impl VosVisitor {
         }
         Ok(())
     }
-    fn push_table(&mut self, mut table: TableStatement, id: IdentifierNode, body: Vec<DeclareBodyNode>) -> VosResult {
+    fn push_table(&mut self, mut table: TableStatement, id: IdentifierNode, body: Vec<DeclareBodyNode>) -> QResult {
         table.name = id.as_identifier();
         for term in body {
             match term {

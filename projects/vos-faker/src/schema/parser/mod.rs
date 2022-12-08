@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use vos_ast::{VosAST, VosStatement};
-use vos_error::{Validation, VosError, VosResult};
+use vos_error::{QResult, Validation, VosError};
 
 use crate::schema::Schema;
 
@@ -22,7 +22,7 @@ impl Schema {
 }
 
 impl ParseState {
-    fn parse(&mut self, i: &str) -> VosResult {
+    fn parse(&mut self, i: &str) -> QResult {
         let ast = VosAST::from_str(i)?;
         for statement in ast.statements {
             match statement {

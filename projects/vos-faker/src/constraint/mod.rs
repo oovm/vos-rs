@@ -1,6 +1,6 @@
 use num::{BigInt, Zero};
 use std::str::FromStr;
-use vos_error::VosResult;
+use vos_error::QResult;
 
 mod decimal_constraint;
 mod dict_constraint;

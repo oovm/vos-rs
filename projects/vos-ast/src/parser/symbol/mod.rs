@@ -1,10 +1,10 @@
 use super::*;
 
 impl TypeValueNode {
-    pub fn as_field_type(&self) -> VosResult<FieldTyping> {
+    pub fn as_field_type(&self) -> QResult<FieldTyping> {
         Ok(FieldTyping { namespace: self.name.as_namespace(), generics: self.as_generic()? })
     }
-    fn as_generic(&self) -> VosResult<GenericStatement> {
+    fn as_generic(&self) -> QResult<GenericStatement> {
         match &self.generic {
             Some(s) => s.as_generic(),
             None => Ok(GenericStatement::Nothing),
@@ -13,7 +13,7 @@ impl TypeValueNode {
 }
 
 impl GenericNode {
-    pub fn as_generic(&self) -> VosResult<GenericStatement> {
+    pub fn as_generic(&self) -> QResult<GenericStatement> {
         match self {
             GenericNode::GenericNum1(v) => v.as_generic(),
             GenericNode::GenericNum2(v) => v.as_generic(),

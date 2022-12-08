@@ -29,7 +29,7 @@ impl Visit for Info {
 }
 
 impl Visit for Contact {
-    type Output = VosResult<ProjectAuthor>;
+    type Output = QResult<ProjectAuthor>;
 
     fn visit(&self, _: &mut Context) -> Self::Output {
         let mut author = ProjectAuthor::new(
@@ -62,7 +62,7 @@ impl Visit for License {
 }
 
 impl Visit for Server {
-    type Output = VosResult<Environment>;
+    type Output = QResult<Environment>;
 
     fn visit(&self, _: &mut Context) -> Self::Output {
         let mut out = Environment::new(Url::from_str(&self.url)?);

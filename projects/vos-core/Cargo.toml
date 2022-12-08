@@ -20,10 +20,9 @@ diagnostic-quick = "0.2.6"
 
 
 [dev-dependencies]
+peginator_codegen = "0.6.0"
 
 
-[build-dependencies]
-peginator = "0.6.0"
 
 [features]
 default = []
