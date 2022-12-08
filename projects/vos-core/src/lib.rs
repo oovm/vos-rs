@@ -12,13 +12,13 @@ pub use self::{
         document::{Document, DocumentKind},
         endpoint::Endpoint,
         environment::Environment,
-        license::ProjectLicense,
+        license::License,
         objects::Object,
         Project, ProjectKind, Schema,
     },
 };
 pub use voml_collection::{Number, Text};
-pub use vos_error::{for_3rd::*, Validation, VosError, VosErrorKind, VosResult};
+use vos_error::Validation;
 
 pub type List = voml_collection::List<Object>;
 pub type Dict = voml_collection::Dict<Object>;

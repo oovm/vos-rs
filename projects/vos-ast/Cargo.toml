@@ -11,10 +11,10 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-indexmap = "1.9.1"
+indexmap = "1.9.2"
 num = "0.4.0"
 bigdecimal = "0.3.0"
-peginator = "0.3.0"
+peginator = "0.6.0"
 unicode-ident = "1.0.5"
 
 [dependencies.vos-error]
@@ -24,7 +24,7 @@ features = ["bigdecimal", "peginator"]
 [dev-dependencies]
 
 [build-dependencies]
-peginator = "0.3.0"
+peginator = "0.6.0"
 
 [features]
 default = []

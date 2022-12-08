@@ -26,7 +26,7 @@ use vos_error::VosError;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Project {
     pub kind: ProjectKind,
-    pub license: ProjectLicense,
+    pub license: License,
     pub edition: Version,
     pub version: Version,
     pub authors: BTreeSet<ProjectAuthor>,

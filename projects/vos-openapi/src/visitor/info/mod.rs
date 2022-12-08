@@ -57,7 +57,7 @@ impl Visit for License {
             },
             None => None,
         };
-        ctx.project.license = ProjectLicense::parse(&self.name, url, "");
+        ctx.project.license = License::parse(&self.name, url, "");
     }
 }
 

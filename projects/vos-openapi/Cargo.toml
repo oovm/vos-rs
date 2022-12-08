@@ -15,14 +15,14 @@ json5 = "0.4.1"
 
 
 [dependencies.vos-core]
-version= "0.1.0"
+#version= "0.1.0"
 path = "../vos-core"
-features = ["json"]
+features = []
 
 [dev-dependencies]
 
 [build-dependencies]
-peginator = "0.3.0"
+peginator = "0.6.0"
 
 [features]
 default = []

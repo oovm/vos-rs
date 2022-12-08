@@ -1,19 +1,20 @@
 use super::*;
 
+/// https://spdx.github.io/spdx-spec/v2.3/SPDX-license-list/
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum ProjectLicense {
+pub enum License {
     MIT,
     Apache2,
     Custom { license: String, text: String, link: Option<Url> },
 }
 
-impl Default for ProjectLicense {
+impl Default for License {
     fn default() -> Self {
-        ProjectLicense::MIT
+        License::MIT
     }
 }
 
-impl FromStr for ProjectLicense {
+impl FromStr for License {
     type Err = Infallible;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -25,18 +26,18 @@ impl FromStr for ProjectLicense {
             }
         }
         let out = match s.to_lowercase().as_str() {
-            "mit" => ProjectLicense::MIT,
-            "apache2" | "apache2.0" => ProjectLicense::Apache2,
-            _ => ProjectLicense::Custom { license: s.to_string(), text: "".to_string(), link: None },
+            "mit" => License::MIT,
+            "apache2" | "apache2.0" => License::Apache2,
+            _ => License::Custom { license: s.to_string(), text: "".to_string(), link: None },
         };
         Ok(out)
     }
 }
 
-impl ProjectLicense {
-    pub fn parse(license: &str, url: Option<Url>, content: impl Into<String>) -> ProjectLicense {
+impl License {
+    pub fn parse(license: &str, url: Option<Url>, content: impl Into<String>) -> License {
         let mut out = Self::from_str(license).unwrap();
-        if let ProjectLicense::Custom { text, link, .. } = &mut out {
+        if let License::Custom { text, link, .. } = &mut out {
             *link = url;
             *text = content.into();
         }
