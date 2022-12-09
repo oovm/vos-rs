@@ -1,4 +1,5 @@
 use super::*;
+use voml_collection::Integer;
 
 #[cfg(feature = "json")]
 mod json;
@@ -7,7 +8,8 @@ mod json;
 pub enum Object {
     Default,
     Boolean(bool),
-    Number(Number),
+    Integer(Integer),
+    Decimal(Decimal),
     Reference(String),
     Text(Text),
     List(List),
@@ -36,7 +38,7 @@ impl Object {
     pub fn text(text: impl Into<String>, hint: impl Into<String>) -> Self {
         Object::Text(Text { hint: hint.into(), text: text.into() })
     }
-    pub fn number(number: impl Into<BigDecimal>, hint: impl Into<String>) -> Self {
-        Object::Number(Number { hint: hint.into(), value: number.into() })
+    pub fn integer(number: impl Into<BigInt>, hint: impl Into<String>) -> Self {
+        Object::Integer(Integer { hint: hint.into(), value: number.into() })
     }
 }

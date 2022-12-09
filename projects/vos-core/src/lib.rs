@@ -17,13 +17,14 @@ pub use self::{
         Project, ProjectKind, Schema,
     },
 };
-pub use voml_collection::{Number, Text};
-use vos_error::Validation;
+use diagnostic_quick::Validation;
+pub use voml_collection::Text;
 
 pub type List = voml_collection::List<Object>;
 pub type Dict = voml_collection::Dict<Object>;
 
 mod constraint;
+mod faker;
 mod pretty_print;
 mod schema;
 pub mod validator;

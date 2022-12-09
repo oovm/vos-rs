@@ -1,6 +1,3 @@
-use crate::*;
-use indexmap::IndexMap;
-use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, BTreeSet},
@@ -8,10 +5,15 @@ use std::{
     fmt::{Display, Formatter},
     str::FromStr,
 };
-use vos_error::{
-    for_3rd::{EmailAddress, Url, Version},
+
+use diagnostic_quick::{
+    error_3rd::{BigInt, Decimal, EmailAddress, Url, Version},
     QResult,
 };
+use indexmap::IndexMap;
+use serde::{Deserialize, Serialize};
+
+use crate::*;
 
 pub mod authors;
 pub mod document;
@@ -22,7 +24,6 @@ pub mod license;
 pub mod objects;
 pub mod route;
 
-use vos_error::VosError;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Project {
     pub kind: ProjectKind,

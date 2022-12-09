@@ -4,11 +4,11 @@ use super::*;
 pub struct DecimalConstraint {
     pub kind: DecimalKind,
     /// Minimum length of utf8 string
-    pub min: Option<BigDecimal>,
+    pub min: Option<Decimal>,
     /// Minimum number of unicode characters
     pub min_inclusive: bool,
     /// Maximum length of utf8 string
-    pub max: Option<BigDecimal>,
+    pub max: Option<Decimal>,
     /// Maximum number of unicode characters
     pub max_inclusive: bool,
     #[serde(flatten)]

@@ -1,3 +1,5 @@
+use diagnostic_quick::{QError, QResult};
+
 use super::*;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -32,10 +34,10 @@ impl Ord for ProjectAuthor {
 impl ProjectAuthor {
     pub fn new(name: &str, email: &str) -> QResult<Self> {
         if name.is_empty() {
-            return Err(VosError::parse_error("Project author missing name"));
+            Err(QError::syntax_error("Project author missing name"))?;
         }
         if email.is_empty() {
-            return Err(VosError::parse_error("Project author missing email"));
+            Err(QError::syntax_error("Project author missing email"))?;
         }
         let email = EmailAddress::from_str(email)?;
         Ok(Self { name: name.to_owned(), email, extra: Default::default() })

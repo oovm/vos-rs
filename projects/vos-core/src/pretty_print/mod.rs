@@ -1,8 +1,7 @@
+use diagnostic_quick::Validation;
 use std::fmt::{Arguments, Display, Formatter, Write};
 
 use indenter::CodeFormatter;
-
-use vos_error::Validation;
 
 use crate::{Codegen, Environment, Project};
 
