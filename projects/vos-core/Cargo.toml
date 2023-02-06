@@ -11,23 +11,21 @@ edition = "2021"
 
 [dependencies]
 indenter = { version = "0.3.3", features = ["std"] }
-serde = { version = "1.0.149", features = ["derive"] }
+serde = { version = "1.0.152", features = ["derive"] }
 indexmap = { version = "1.9.2", features = ["serde"] }
 voml-collection = "0.3.2"
-rand = { version = "0.8.5", features = ["small_rng"] }
+rand = { version = "0.8.5", optional = true, features = ["small_rng", "simd_support"] }
 chrono = "0.4.23"
 
 [dependencies.diagnostic-quick]
-version = "0.2.9"
+version = "0.3.6"
 features = ["email_address", "semver", "url", "num", "rust_decimal"]
 
 
 [dev-dependencies]
 peginator_codegen = "0.6.0"
 
-
-
 [features]
 default = []
-faker = []
+faker = ["rand"]
 validator = []

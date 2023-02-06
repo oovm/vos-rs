@@ -1,9 +1,10 @@
+use std::str::FromStr;
+
 use diagnostic_quick::{
-    error_3rd::{BigInt, Decimal},
+    error_3rd::{num_traits::Zero, BigInt, Decimal},
     QResult,
 };
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 
 use crate::Document;
 

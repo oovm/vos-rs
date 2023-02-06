@@ -10,7 +10,7 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-openapiv3 = "1.0.1"
+openapiv3 = "1.0.2"
 json5 = "0.4.1"
 
 

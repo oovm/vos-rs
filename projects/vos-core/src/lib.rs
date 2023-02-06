@@ -24,12 +24,11 @@ pub type List = voml_collection::List<Object>;
 pub type Dict = voml_collection::Dict<Object>;
 
 mod constraint;
+#[cfg(feature = "faker")]
 mod faker;
 mod pretty_print;
 mod schema;
 pub mod validator;
-
-pub trait Faker {}
 
 pub trait Parser<S> {
     fn parse(&self, source: &S) -> Validation<Project>;
