@@ -15,7 +15,7 @@ indexmap = "1.9.2"
 num = "0.4.0"
 bigdecimal = "0.3.0"
 peginator = "0.6.0"
-unicode-ident = "1.0.6"
+unicode-ident = "1.0.8"
 
 [dependencies.vos-error]
 version = "0.3.2"
