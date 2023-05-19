@@ -14,6 +14,9 @@ pub trait Expecting {
     }
 }
 
+#[repr(transparent)]
+pub struct ExpectingWrapper<T>(T);
+
 impl Expecting for str {
     #[inline]
     fn expecting(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -31,6 +34,7 @@ impl Display for &dyn Expecting {
 pub enum Except {
     Boolean,
     Character,
+    Unsigned { bits: usize },
 }
 
 impl Expecting for Except {
@@ -38,6 +42,9 @@ impl Expecting for Except {
         match self {
             Except::Boolean => f.write_str("boolean"),
             Except::Character => f.write_str("character"),
+            Except::Unsigned { bits } => {
+                write!(f, "u{}", bits)
+            }
         }
     }
 }

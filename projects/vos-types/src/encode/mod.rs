@@ -1,7 +1,5 @@
 use crate::encoder::Encoder;
 
-pub trait EncodeError {}
-
 /// Trait governing how types are encoded.
 pub trait Encode {
     /// Encode the given output.

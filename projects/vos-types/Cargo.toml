@@ -24,4 +24,6 @@ edition = "2021"
 #peginator = "0.3.0"
 
 [features]
-default = []
+default = ["alloc"]
+alloc = []
+std = []
