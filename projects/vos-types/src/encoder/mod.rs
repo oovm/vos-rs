@@ -1,4 +1,4 @@
-use crate::{error::Report, except::Except};
+use crate::{encode::Encode, error::Report, except::Except};
 use core::fmt::Formatter;
 
 /// Trait governing how the encoder works.
@@ -7,23 +7,23 @@ pub trait Encoder: Sized {
     /// The type returned by the encoder. For [Encode] implementations ensures
     /// that they are used correctly, since only functions returned by the
     /// [Encoder] is capable of returning this value.
-    type Ok;
+    type Value;
     /// The error raised by an encoder.
     type Error: Report;
     /// Encoder returned when encoding an optional value which is present.
-    type Some: Encoder<Ok = Self::Ok, Error = Self::Error>;
+    type Some: Encoder<Value = Self::Value, Error = Self::Error>;
     /// A simple pack that packs a sequence of elements.
-    type Pack: SequenceEncoder<Ok = Self::Ok, Error = Self::Error>;
+    type Pack: SequenceEncoder<Ok = Self::Value, Error = Self::Error>;
     /// The type of a sequence encoder.
-    type List: SequenceEncoder<Ok = Self::Ok, Error = Self::Error>;
-    /// The type of a tuple encoder.
-    type Tuple: SequenceEncoder<Ok = Self::Ok, Error = Self::Error>;
+    type List: SequenceEncoder<Ok = Self::Value, Error = Self::Error>;
     /// The type of a map encoder.
-    type Dict: PairsEncoder<Ok = Self::Ok, Error = Self::Error>;
+    type Dict: DictionaryEncoder<Ok = Self::Value, Error = Self::Error>;
+    /// The type of a tuple encoder.
+    type Tuple: SequenceEncoder<Ok = Self::Value, Error = Self::Error>;
     /// Encoder that can encode a struct.
-    type Class: PairsEncoder<Ok = Self::Ok, Error = Self::Error>;
+    type Class: DictionaryEncoder<Ok = Self::Value, Error = Self::Error>;
     /// Encoder for a struct variant.
-    type Union: VariantEncoder<Ok = Self::Ok, Error = Self::Error>;
+    type Union: EnumerateEncoder<Ok = Self::Value, Error = Self::Error>;
 
     /// An expectation error. Every other implementation defers to this to
     /// report that something unexpected happened.
@@ -51,8 +51,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_unit(self) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_unit(self) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a boolean value.
@@ -80,8 +80,8 @@ pub trait Encoder: Sized {
     /// ```
 
     #[inline]
-    fn encode_bool(self, value: bool) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_bool(self, value: bool) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a character.
@@ -108,8 +108,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_char(self, _: char) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Character))
+    fn encode_char(self, value: char) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 8-bit unsigned integer.
@@ -136,8 +136,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_u8(self, _: u8) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_u8(self, value: u8) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 16-bit unsigned integer.
@@ -164,8 +164,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_u16(self, _: u16) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_u16(self, _: u16) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 32-bit unsigned integer.
@@ -192,8 +192,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_u32(self, _: u32) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_u32(self, _: u32) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 64-bit unsigned integer.
@@ -220,8 +220,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_u64(self, _: u64) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_u64(self, _: u64) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 128-bit unsigned integer.
@@ -248,8 +248,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_u128(self, _: u128) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(Except::Boolean))
+    fn encode_u128(self, _: u128) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 8-bit signed integer.
@@ -276,8 +276,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_i8(self, _: i8) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Signed8, &ExpectingWrapper::new(self))))
+    fn encode_i8(self, _: i8) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 16-bit signed integer.
@@ -304,8 +304,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_i16(self, _: i16) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Signed16, &ExpectingWrapper::new(self))))
+    fn encode_i16(self, _: i16) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 32-bit signed integer.
@@ -332,8 +332,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_i32(self, _: i32) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Signed32, &ExpectingWrapper::new(self))))
+    fn encode_i32(self, _: i32) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 64-bit signed integer.
@@ -360,8 +360,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_i64(self, _: i64) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Signed64, &ExpectingWrapper::new(self))))
+    fn encode_i64(self, _: i64) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 128-bit signed integer.
@@ -388,8 +388,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_i128(self, _: i128) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Signed128, &ExpectingWrapper::new(self))))
+    fn encode_i128(self, _: i128) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode Rusts [`usize`].
@@ -416,8 +416,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_usize(self, _: usize) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Usize, &ExpectingWrapper::new(self))))
+    fn encode_usize(self, value: usize) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode Rusts [`isize`].
@@ -444,8 +444,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_isize(self, _: isize) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Isize, &ExpectingWrapper::new(self))))
+    fn encode_isize(self, value: isize) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 32-bit floating point value.
@@ -472,8 +472,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_f32(self, _: f32) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Float32, &ExpectingWrapper::new(self))))
+    fn encode_f32(self, _: f32) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a 64-bit floating point value.
@@ -500,8 +500,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_f64(self, _: f64) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Float64, &ExpectingWrapper::new(self))))
+    fn encode_f64(self, _: f64) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode fixed-length array.
@@ -528,8 +528,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_array<const N: usize>(self, _: [u8; N]) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Array, &ExpectingWrapper::new(self))))
+    fn encode_array<const N: usize>(self, _: [u8; N]) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a sequence of bytes.
@@ -556,8 +556,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_bytes(self, _: &[u8]) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Bytes, &ExpectingWrapper::new(self))))
+    fn encode_bytes(self, _: &[u8]) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode the given slices of bytes in sequence, with one following another
@@ -592,8 +592,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_bytes_vectored(self, _: &[&[u8]]) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Bytes, &ExpectingWrapper::new(self))))
+    fn encode_bytes_vectored(self, _: &[&[u8]]) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode a string.
@@ -620,8 +620,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_string(self, _: &str) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::String, &ExpectingWrapper::new(self))))
+    fn encode_string(self, value: &str) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Encode an optional value that is present.
@@ -652,7 +652,7 @@ pub trait Encoder: Sized {
     /// ```
     #[inline]
     fn encode_some(self) -> Result<Self::Some, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Option, &ExpectingWrapper::new(self))))
+        todo!()
     }
 
     /// Encode an optional value that is absent.
@@ -682,8 +682,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_none(self) -> Result<Self::Ok, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Option, &ExpectingWrapper::new(self))))
+    fn encode_none(self) -> Result<Self::Value, Self::Error> {
+        todo!()
     }
 
     /// Construct a pack that can encode more than one element at a time.
@@ -723,7 +723,7 @@ pub trait Encoder: Sized {
     /// ```
     #[inline]
     fn encode_pack(self) -> Result<Self::Pack, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Pack, &ExpectingWrapper::new(self))))
+        todo!()
     }
 
     /// Encode a sequence with a known length `len`.
@@ -765,13 +765,13 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_sequence(self, #[allow(unused)] len: usize) -> Result<Self::List, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Sequence, &ExpectingWrapper::new(self))))
+    fn encode_list(self, length: usize) -> Result<Self::List, Self::Error> {
+        todo!()
     }
 
     /// Encode a tuple with a known length `len`.
     ///
-    /// This is almost identical to [Encoder::encode_sequence] except that we
+    /// This is almost identical to [Encoder::encode_list] except that we
     /// know that we are encoding a fixed-length container of length `len`, and
     /// assuming the size of that container doesn't change in size it can be
     /// decoded using [Decoder::decode_tuple] again without the underlying
@@ -805,14 +805,14 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_tuple(self, #[allow(unused)] len: usize) -> Result<Self::Tuple, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Tuple, &ExpectingWrapper::new(self))))
+    fn encode_tuple(self, length: usize) -> Result<Self::Tuple, Self::Error> {
+        todo!()
     }
 
     /// Encode a map with a known length `len`.
     #[inline]
-    fn encode_map(self, #[allow(unused)] len: usize) -> Result<Self::Dict, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Map, &ExpectingWrapper::new(self))))
+    fn encode_dict(self, length: usize) -> Result<Self::Dict, Self::Error> {
+        todo!()
     }
 
     /// Encode a struct.
@@ -846,8 +846,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_struct(self, _: usize) -> Result<Self::Class, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Struct, &ExpectingWrapper::new(self))))
+    fn encode_struct(self, length: usize) -> Result<Self::Class, Self::Error> {
+        todo!()
     }
 
     /// Encode an struct enum variant.
@@ -894,8 +894,8 @@ pub trait Encoder: Sized {
     /// }
     /// ```
     #[inline]
-    fn encode_variant(self) -> Result<Self::Union, Self::Error> {
-        Err(Self::Error::message(expecting::invalid_type(&expecting::Variant, &ExpectingWrapper::new(self))))
+    fn encode_enum(self) -> Result<Self::Union, Self::Error> {
+        todo!()
     }
 }
 
@@ -907,7 +907,7 @@ pub trait SequenceEncoder {
     type Error: Report;
 
     /// The encoder returned when advancing the sequence encoder.
-    type Encoder<'this>: Encoder<Ok = Self::Ok, Error = Self::Error>
+    type Encoder<'this>: Encoder<Value = Self::Ok, Error = Self::Error>
     where
         Self: 'this;
 
@@ -931,7 +931,7 @@ pub trait SequenceEncoder {
 }
 
 /// Encoder for a sequence of pairs.
-pub trait PairsEncoder {
+pub trait DictionaryEncoder {
     /// Result type of the encoder.
     type Ok;
     /// The error raised by a map encoder.
@@ -943,7 +943,7 @@ pub trait PairsEncoder {
 
     /// Insert a pair immediately.
     #[inline]
-    fn insert<M, F, S>(&mut self, first: F, second: S) -> Result<(), Self::Error>
+    fn insert<F, S>(&mut self, first: F, second: S) -> Result<(), Self::Error>
     where
         Self: Sized,
         F: Encode,
@@ -968,55 +968,54 @@ pub trait PairEncoder {
     type Error: Report;
 
     /// The encoder returned when advancing the map encoder to encode the key.
-    type First<'this>: Encoder<Ok = Self::Ok, Error = Self::Error>
+    type Key<'this>: Encoder<Value = Self::Ok, Error = Self::Error>
     where
         Self: 'this;
 
     /// The encoder returned when advancing the map encoder to encode the value.
-    type Second<'this>: Encoder<Ok = Self::Ok, Error = Self::Error>
+    type Value<'this>: Encoder<Value = Self::Ok, Error = Self::Error>
     where
         Self: 'this;
 
     /// Insert the pair immediately.
     #[inline]
-    fn insert<M, F, S>(mut self, first: F, second: S) -> Result<Self::Ok, Self::Error>
+    fn insert<F, S>(mut self, key: F, value: S) -> Result<Self::Ok, Self::Error>
     where
         Self: Sized,
-        M: Mode,
         F: Encode,
         S: Encode,
     {
-        self.first().and_then(|e| first.encode(e))?;
-        self.second().and_then(|e| second.encode(e))?;
+        key.encode(self.key()?)?;
+        value.encode(self.value()?)?;
         self.end()
     }
 
     /// Return the encoder for the first element in the pair.
     #[must_use = "encoders must be consumed"]
-    fn first(&mut self) -> Result<Self::First<'_>, Self::Error>;
+    fn key(&mut self) -> Result<Self::Key<'_>, Self::Error>;
 
     /// Return encoder for the second element in the pair.
     #[must_use = "encoders must be consumed"]
-    fn second(&mut self) -> Result<Self::Second<'_>, Self::Error>;
+    fn value(&mut self) -> Result<Self::Value<'_>, Self::Error>;
 
     /// Stop encoding this pair.
     fn end(self) -> Result<Self::Ok, Self::Error>;
 }
 
 /// Trait governing how to encode a variant.
-pub trait VariantEncoder {
+pub trait EnumerateEncoder {
     /// Result type of the encoder.
     type Ok;
     /// The error raised by a map encoder.
     type Error: Report;
 
     /// The encoder returned when advancing the map encoder to encode the key.
-    type Tag<'this>: Encoder<Ok = Self::Ok, Error = Self::Error>
+    type Tag<'this>: Encoder<Value = Self::Ok, Error = Self::Error>
     where
         Self: 'this;
 
     /// The encoder returned when advancing the map encoder to encode the value.
-    type Variant<'this>: Encoder<Ok = Self::Ok, Error = Self::Error>
+    type Variant<'this>: Encoder<Value = Self::Ok, Error = Self::Error>
     where
         Self: 'this;
 
@@ -1025,7 +1024,6 @@ pub trait VariantEncoder {
     fn insert<M, F, S>(mut self, first: F, second: S) -> Result<Self::Ok, Self::Error>
     where
         Self: Sized,
-        M: Mode,
         F: Encode,
         S: Encode,
     {

@@ -35,6 +35,7 @@ pub enum Except {
     Boolean,
     Character,
     Unsigned { bits: usize },
+    String,
 }
 
 impl Expecting for Except {
@@ -45,6 +46,7 @@ impl Expecting for Except {
             Except::Unsigned { bits } => {
                 write!(f, "u{}", bits)
             }
+            Except::String => f.write_str("string"),
         }
     }
 }
